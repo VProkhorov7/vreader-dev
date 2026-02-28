@@ -29,9 +29,22 @@
 		B105CCBD2F52CC410022DDCA /* VreaderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VreaderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B105CD0D2F52E33F0022DDCA /* Exceptions for "Vreader" folder in "Vreader" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Untitled.swift,
+			);
+			target = B105CCA52F52CC400022DDCA /* Vreader */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B105CCA82F52CC400022DDCA /* Vreader */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B105CD0D2F52E33F0022DDCA /* Exceptions for "Vreader" folder in "Vreader" target */,
+			);
 			path = Vreader;
 			sourceTree = "<group>";
 		};
