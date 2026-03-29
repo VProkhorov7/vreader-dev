@@ -1,0 +1,82 @@
+// Localizable.strings (Russian — основной язык приложения)
+
+// Tabs
+"tab.library"   = "Библиотека";
+"tab.reading"   = "Читаю";
+"tab.catalogs"  = "Каталоги";
+"tab.settings"  = "Настройки";
+"tab.home"      = "Дом";
+
+// Library
+"library.title"         = "Библиотека";
+"library.empty.title"   = "Библиотека пуста";
+"library.empty.message" = "Добавьте книги с устройства\nили подключите облачное хранилище";
+"library.add_book"      = "Добавить книгу";
+"library.delete"        = "Удалить";
+"library.from_device"   = "С устройства / iCloud Drive";
+"library.from_account"  = "Из %@";
+
+// Reader
+"reader.contents"          = "Содержание";
+"reader.appearance"        = "Оформление";
+"reader.theme"             = "Тема";
+"reader.font_size"         = "Размер текста";
+"reader.line_spacing"      = "Межстрочный интервал";
+"reader.scroll_mode"       = "Режим листания";
+"reader.language_script"   = "Язык / направление";
+"reader.vertical_text"     = "Вертикальный текст";
+"reader.vertical_text.hint" = "Для китайского, японского";
+"reader.rtl_hint"          = "RTL для арабского определяется автоматически";
+"reader.theme.light"       = "Светлая";
+"reader.theme.sepia"       = "Сепия";
+"reader.theme.dark"        = "Тёмная";
+"reader.scroll.page_h"     = "Страницами →";
+"reader.scroll.vertical"   = "Полотно ↕";
+"reader.scroll.horizontal" = "Полотно →";
+"reader.spacing.narrow"    = "Узкий";
+"reader.spacing.medium"    = "Средний";
+"reader.spacing.wide"      = "Широкий";
+"reader.read"              = "Читать";
+"reader.continue"          = "Продолжить чтение";
+"reader.not_downloaded"    = "Книга не скачана";
+"reader.download"          = "Скачать";
+"reader.finished"          = "Прочитано";
+"reader.beginning"         = "Начало";
+"reader.end"               = "Конец";
+"reader.chapters"          = "Главы";
+"reader.chapter"           = "Глава";
+"reader.in_progress"       = "В процессе";
+
+// Settings
+"settings.title"         = "Настройки";
+"settings.appearance"    = "Оформление";
+"settings.font"          = "Шрифт";
+"settings.font_picker"   = "Выбор шрифта";
+"settings.font_size"     = "Размер шрифта";
+"settings.storage"       = "Хранилища";
+"settings.cloud"         = "Добавить хранилище";
+"settings.sync"          = "Синхронизация";
+"settings.sync.detail"   = "Прогресс и закладки синхронизируются через iCloud";
+"settings.ai"            = "Искусственный интеллект";
+"settings.ai.soon"       = "ИИ-функции (скоро)";
+"settings.app"           = "Приложение";
+"settings.version"       = "Версия";
+"settings.feedback"      = "Написать в поддержку";
+"settings.review"        = "Оставить отзыв";
+"settings.dev"           = "Разработка";
+
+// Cloud / Catalogs
+"cloud.free"       = "Бесплатные";
+"cloud.stores"     = "Магазины";
+"cloud.available"  = "Доступные";
+"cloud.connected"  = "Подключённые";
+"cloud.connection" = "Подключение";
+"cloud.service"    = "Сервис";
+"cloud.add"        = "Добавить";
+
+// Common
+"common.cancel"  = "Отмена";
+"common.done"    = "Готово";
+"common.back"    = "Назад";
+"common.error"   = "Ошибка";
+"common.reading" = "Чтение";

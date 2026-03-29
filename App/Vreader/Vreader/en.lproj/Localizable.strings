@@ -1,0 +1,82 @@
+// Localizable.strings (English)
+
+// Tabs
+"tab.library"   = "Library";
+"tab.reading"   = "Reading";
+"tab.catalogs"  = "Catalogs";
+"tab.settings"  = "Settings";
+"tab.home"      = "Home";
+
+// Library
+"library.title"         = "Library";
+"library.empty.title"   = "Library is Empty";
+"library.empty.message" = "Add books from your device\nor connect cloud storage";
+"library.add_book"      = "Add Book";
+"library.delete"        = "Delete";
+"library.from_device"   = "From Device / iCloud Drive";
+"library.from_account"  = "From %@";
+
+// Reader
+"reader.contents"           = "Contents";
+"reader.appearance"         = "Appearance";
+"reader.theme"              = "Theme";
+"reader.font_size"          = "Font Size";
+"reader.line_spacing"       = "Line Spacing";
+"reader.scroll_mode"        = "Scroll Mode";
+"reader.language_script"    = "Language / Direction";
+"reader.vertical_text"      = "Vertical Text";
+"reader.vertical_text.hint" = "For Chinese, Japanese";
+"reader.rtl_hint"           = "Arabic RTL is detected automatically";
+"reader.theme.light"        = "Light";
+"reader.theme.sepia"        = "Sepia";
+"reader.theme.dark"         = "Dark";
+"reader.scroll.page_h"      = "Pages →";
+"reader.scroll.vertical"    = "Scroll ↕";
+"reader.scroll.horizontal"  = "Scroll →";
+"reader.spacing.narrow"     = "Narrow";
+"reader.spacing.medium"     = "Medium";
+"reader.spacing.wide"       = "Wide";
+"reader.read"               = "Read";
+"reader.continue"           = "Continue Reading";
+"reader.not_downloaded"     = "Not Downloaded";
+"reader.download"           = "Download";
+"reader.finished"           = "Finished";
+"reader.beginning"          = "Beginning";
+"reader.end"                = "End";
+"reader.chapters"           = "Chapters";
+"reader.chapter"            = "Chapter";
+"reader.in_progress"        = "In Progress";
+
+// Settings
+"settings.title"         = "Settings";
+"settings.appearance"    = "Appearance";
+"settings.font"          = "Font";
+"settings.font_picker"   = "Choose Font";
+"settings.font_size"     = "Font Size";
+"settings.storage"       = "Storage";
+"settings.cloud"         = "Add Storage";
+"settings.sync"          = "Sync";
+"settings.sync.detail"   = "Reading progress and bookmarks sync via iCloud";
+"settings.ai"            = "Artificial Intelligence";
+"settings.ai.soon"       = "AI features (coming soon)";
+"settings.app"           = "App";
+"settings.version"       = "Version";
+"settings.feedback"      = "Contact Support";
+"settings.review"        = "Leave a Review";
+"settings.dev"           = "Development";
+
+// Cloud / Catalogs
+"cloud.free"       = "Free";
+"cloud.stores"     = "Stores";
+"cloud.available"  = "Available";
+"cloud.connected"  = "Connected";
+"cloud.connection" = "Connection";
+"cloud.service"    = "Service";
+"cloud.add"        = "Add";
+
+// Common
+"common.cancel"  = "Cancel";
+"common.done"    = "Done";
+"common.back"    = "Back";
+"common.error"   = "Error";
+"common.reading" = "Reading";
