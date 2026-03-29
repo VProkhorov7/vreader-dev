@@ -6,7 +6,7 @@ final class Book: Identifiable {
     var id:           UUID   = UUID()
     var title:        String = ""
     var author:       String = "Неизвестный автор"
-    var coverData:    Data?  = nil
+    var coverPath:    String? = nil
     var filePath:     String = ""
     var format:       String = "pdf"
     var fileSize:     Int64  = 0

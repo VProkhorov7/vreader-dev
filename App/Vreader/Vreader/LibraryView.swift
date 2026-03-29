@@ -204,13 +204,13 @@ struct BookRow: View {
     var body: some View {
         HStack(spacing: 12) {
             Group {
-                if let data = book.coverData {
+                if let path = book.coverPath {
                     #if canImport(UIKit)
-                    if let img = UIImage(data: data) {
+                    if let img = UIImage(contentsOfFile: path) {
                         Image(uiImage: img).resizable().scaledToFill()
                     } else { placeholderIcon }
                     #elseif canImport(AppKit)
-                    if let img = NSImage(data: data) {
+                    if let img = NSImage(contentsOfFile: path) {
                         Image(nsImage: img).resizable().scaledToFill()
                     } else { placeholderIcon }
                     #endif

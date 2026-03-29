@@ -93,7 +93,7 @@ private struct CoverView: View {
 
     @ViewBuilder
     private var coverContent: some View {
-        if let data = book.coverData, let uiImage = UIImage(data: data) {
+        if let path = book.coverPath, let uiImage = UIImage(contentsOfFile: path) {
             Image(uiImage: uiImage)
                 .resizable()
                 .scaledToFill()

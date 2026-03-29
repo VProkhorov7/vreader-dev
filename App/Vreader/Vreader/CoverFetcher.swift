@@ -18,7 +18,7 @@ final class CoverFetcher {
     // MARK: - Загрузить обложку для одной книги
 
     func fetchIfNeeded(book: Book, context: ModelContext) {
-        guard book.coverData == nil,
+        guard book.coverPath == nil,
               !book.title.isEmpty,
               !inProgress.contains(book.id) else { return }
 
@@ -28,19 +28,29 @@ final class CoverFetcher {
             defer { inProgress.remove(book.id) }
 
             if let data = await fetchFromOpenLibrary(title: book.title, author: book.author) {
-                book.coverData = data
+                book.coverPath = saveCover(data: data, bookID: book.id)
                 try? context.save()
             } else if let data = await fetchFromGoogleBooks(title: book.title, author: book.author) {
-                book.coverData = data
+                book.coverPath = saveCover(data: data, bookID: book.id)
                 try? context.save()
             }
         }
     }
 
+    private func saveCover(data: Data, bookID: UUID) -> String? {
+        let coversDir = FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("Covers", isDirectory: true)
+        try? FileManager.default.createDirectory(at: coversDir, withIntermediateDirectories: true)
+        let file = coversDir.appendingPathComponent("\(bookID.uuidString).jpg")
+        try? data.write(to: file)
+        return file.path
+    }
+
     // MARK: - Загрузить обложки для всей библиотеки
 
     func fetchAllMissing(books: [Book], context: ModelContext) {
-        let missing = books.filter { $0.coverData == nil && !$0.title.isEmpty }
+        let missing = books.filter { $0.coverPath == nil && !$0.title.isEmpty }
         // Грузим с паузой чтобы не перегружать API
         Task {
             for (index, book) in missing.enumerated() {

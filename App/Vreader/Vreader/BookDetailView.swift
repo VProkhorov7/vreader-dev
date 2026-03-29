@@ -58,7 +58,7 @@ struct BookDetailView: View {
 
     private var backgroundLayer: some View {
         ZStack {
-            if let data = book.coverData, let img = UIImage(data: data) {
+            if let path = book.coverPath, let img = UIImage(contentsOfFile: path) {
                 Image(uiImage: img)
                     .resizable().scaledToFill()
                     .blur(radius: 40).scaleEffect(1.2).opacity(0.35)
@@ -80,7 +80,7 @@ struct BookDetailView: View {
             Spacer().frame(height: 72)
 
             Group {
-                if let data = book.coverData, let img = UIImage(data: data) {
+                if let path = book.coverPath, let img = UIImage(contentsOfFile: path) {
                     Image(uiImage: img).resizable().scaledToFit()
                 } else {
                     ZStack {
