@@ -1,0 +1,39 @@
+import:
+  max_file_size: 100000
+  token_limit: 200000
+lang: en
+llm:
+  api_key_env: ANTHROPIC_API_KEY
+  base_url: null
+  max_tokens: 16384
+  model: claude-sonnet-4-6
+  provider: anthropic
+  temperature: 0.3
+project_description: Multi-format iOS/iPadOS e-reader. Swift 6, SwiftUI, SwiftData,
+  iOS 17+.
+project_name: VReader
+roles:
+  architect:
+    api_key_env: ANTHROPIC_API_KEY
+    base_url: null
+    max_tokens: 16384
+    model: claude-sonnet-4-6
+    provider: anthropic
+    temperature: 0.3
+  coder:
+    api_key_env: ANTHROPIC_API_KEY
+    base_url: null
+    max_tokens: 16384
+    model: claude-sonnet-4-6
+    provider: anthropic
+    temperature: 0.3
+  reviewer:
+    api_key_env: ANTHROPIC_API_KEY
+    base_url: null
+    max_tokens: 16384
+    model: claude-sonnet-4-6
+    provider: anthropic
+    temperature: 0.3
+theme: dark
+ui:
+  auto_open_browser: true

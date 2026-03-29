@@ -1,0 +1,65 @@
+# Constitution: VReader — Digiteka
+
+## Stack
+- Language: Swift 6
+- UI Framework: SwiftUI
+- Data: SwiftData
+- Minimum target: iOS 17.0, iPadOS 17.0
+- Mac Catalyst: macOS 14+
+- Xcode: 16+
+- Supported formats: PDF, EPUB, FB2, FB2.ZIP, CBZ, CBR, CBT, CB7,
+  MOBI, AZW3, DJVU, TXT, RTF, CHM, MP3, M4A, M4B, AAC
+- Cloud: iCloud Drive, WebDAV, Yandex.Disk, Nextcloud, Mail.ru,
+  Google Drive (OAuth2), Dropbox (OAuth2), OneDrive (OAuth2), SMB
+- AI: Gemini API (translation, TTS, summaries, X-Ray, dictionary)
+- Purchases: StoreKit 2 (iOS 15+)
+- Metadata: Google Books API, OpenLibrary API
+- Sync: CloudKit (annotations, progress),
+  NSUbiquitousKeyValueStore (reading position)
+- Storage: Keychain for credentials, SwiftData for library,
+  iCloudSettingsStore for settings
+
+## Coding Standards
+- No comments in code
+- camelCase for variables and functions, PascalCase for types
+- All user-facing strings only via L10n.*
+- Files published as packages only — dependent files always together
+- Mandatory validation via check_refs.py before publishing
+- Colors, fonts, spacing only via DesignTokens.swift
+- Themes only via @Environment(\.appTheme) — no hardcoded values
+
+## Testing
+- check_refs.py mandatory before every merge
+- Checks: duplicate types, unresolved references,
+  iOS 17+ compatibility, Swift file structural integrity
+- Proactive validation only — reactive debugging is forbidden
+
+## Constraints
+- iOS 17+ compatibility required everywhere
+- UTType for non-standard extensions — optional only,
+  force-unwrap forbidden
+- NSUbiquitousKeyValueStore requires entitlement —
+  do not use without com.apple.developer.ubiquity-kvs-identifier
+- CloudKit requires entitlement com.apple.developer.icloud-services
+- Credentials only in Keychain
+- StoreKit 2 — the only way to handle purchases
+- Gemini API key only in Keychain, never in code or UserDefaults
+- OAuth only via ASWebAuthenticationSession (never WKWebView)
+- Dependent files published together only
+
+## Security
+- All passwords, tokens and API keys — only Keychain
+  (KeychainManager.shared)
+- No credentials in logs, UI state or UserDefaults
+- WebDAV Basic Auth only via URLCredential + Keychain
+- OAuth tokens (Google, Dropbox, OneDrive) — only Keychain
+- secrets.yaml must not be committed to Git
+- StoreKit receipt verification on every launch
+
+## LLM Rules
+- No stubs without explicit justification
+- Always generate AI_NOTES.md for every stage
+- Do not duplicate existing types — check first
+- Verify all dependencies exist before writing files
+- Code language: English
+- UI language: RU + EN via L10n (priority), AR + ZH (milestone 09)

@@ -1,0 +1,9 @@
+[
+  "reader-view-container",
+  "text-reader-view",
+  "comic-reader-view",
+  "audio-player-view",
+  "tts-service",
+  "reading-state-manager",
+  "notes-toc-panels"
+]

@@ -1,0 +1,9 @@
+[
+  "cloud-provider-protocol",
+  "icloud-provider",
+  "webdav-providers",
+  "oauth-providers",
+  "smb-provider",
+  "cloud-file-browser",
+  "cloudkit-sync"
+]

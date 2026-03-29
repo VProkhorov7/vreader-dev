@@ -1,0 +1,11 @@
+[
+  "swiftdata-models",
+  "model-actor-context",
+  "file-reference-resolver",
+  "book-importer",
+  "cover-fetcher",
+  "metadata-fetcher",
+  "download-manager",
+  "collection-manager",
+  "spotlight-indexer"
+]

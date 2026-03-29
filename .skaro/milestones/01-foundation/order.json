@@ -1,0 +1,16 @@
+[
+  "project-structure-cleanup",
+  "design-tokens",
+  "app-theme-system",
+  "error-code-system",
+  "keychain-manager",
+  "l10n-foundation",
+  "network-monitor",
+  "icloud-settings-store",
+  "diagnostics-service",
+  "project-cleanup",
+  "app-theme",
+  "navigation-state",
+  "error-code",
+  "icloudsettings-store"
+]

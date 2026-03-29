@@ -1,0 +1,8 @@
+[
+  "cloud-provider-protocol",
+  "icloud-webdav-providers",
+  "oauth-manager",
+  "oauth-cloud-providers",
+  "smb-provider",
+  "cloud-file-browser-view"
+]

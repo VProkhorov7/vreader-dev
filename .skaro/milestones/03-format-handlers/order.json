@@ -1,0 +1,10 @@
+[
+  "file-format-handler-protocol",
+  "epub-handler",
+  "fb2-handler",
+  "pdf-handler",
+  "comic-handlers",
+  "text-handlers",
+  "mobi-azw3-handler",
+  "audio-handler"
+]
