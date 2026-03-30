@@ -80,3 +80,6 @@
 "common.back"    = "Back";
 "common.error"   = "Error";
 "common.reading" = "Reading";
+
+// AppTheme
+"app_theme.premium_required" = "This theme is available in Premium only";

@@ -80,3 +80,6 @@
 "common.back"    = "Назад";
 "common.error"   = "Ошибка";
 "common.reading" = "Чтение";
+
+// AppTheme
+"app_theme.premium_required" = "Эта тема доступна только в Premium-версии";

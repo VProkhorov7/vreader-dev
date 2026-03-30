@@ -1,0 +1,17 @@
+# Tasks: app-theme-system
+
+## Stage 1: Core Theme System — Protocol, Types, Implementations, Store, Environment
+
+- [ ] Audit and rewrite `App/Vreader/Vreader/AppTheme.swift` — define `AppTheme` value-type protocol with all required properties (`surfaceBase`, `surfaceLow`, `surfaceMid`, `surfaceHigh`, `accent`, `inkPrimary`, `inkMuted`, `fontDisplay`, `fontBody`, `cornerRadius`, `usesMonospace`, `usesRTLHints`, `id: ThemeID`, `isPremium`), `AppThemeKey: EnvironmentKey` with `defaultValue = EditorialDarkTheme()`, and `EnvironmentValues` extension with `appTheme: any AppTheme` → `App/Vreader/Vreader/AppTheme.swift`
+- [ ] Create `ThemeID` enum conforming to `String`, `CaseIterable`, `Codable`, `Sendable` with cases `editorialDark`, `curatorLight`, `neuralLink`, `typewriter` → `App/Vreader/Vreader/ThemeID.swift`
+- [ ] Create `AppThemeError` enum conforming to `Error` with single case `premiumRequired`, implementing `localizedDescription` via `L10n.AppTheme.premiumRequired` → `App/Vreader/Vreader/AppThemeError.swift`
+- [ ] Create `EditorialDarkTheme` struct conforming to `AppTheme` — static colors (`#1A1A1A` background, `#C8861A` accent), New York fontDisplay + Georgia fontBody with system serif fallback, `isPremium = false` → `App/Vreader/Vreader/EditorialDarkTheme.swift`
+- [ ] Create `CuratorLightTheme` struct conforming to `AppTheme` — static colors (`#F5F0E8` background, gold accent), New York fontDisplay + Georgia fontBody with system serif fallback, `isPremium = false` → `App/Vreader/Vreader/CuratorLightTheme.swift`
+- [ ] Create `NeuralLinkTheme` struct conforming to `AppTheme` — static colors (`#050505` background, `#00FF41`/`#00F3FF` accents), system grotesque fonts, `cornerRadius = 4`, `isPremium = true` → `App/Vreader/Vreader/NeuralLinkTheme.swift`
+- [ ] Create `TypewriterTheme` struct conforming to `AppTheme` — static colors (`#F4F0E4` background, `#8B2500` accent), American Typewriter with Courier New fallback, `cornerRadius = 2`, `isPremium = true` → `App/Vreader/Vreader/TypewriterTheme.swift`
+- [ ] Create `@Observable ThemeStore` class — `currentThemeID: ThemeID` persisted in `UserDefaults` (key `"currentThemeID"`) with TODO comment for `icloud-settings-store`, `availableThemes: [any AppTheme]` returning all 4, `isUnlocked(for:isPremiumUser:) -> Bool`, `setTheme(_:isPremiumUser:) throws`, `currentTheme: any AppTheme` computed property with `ThemeID → any AppTheme` mapping → `App/Vreader/Vreader/ThemeStore.swift`
+- [ ] Extend `L10n.swift` with `AppTheme` namespace containing `premiumRequired` static string accessor → `App/Vreader/Vreader/L10n.swift`
+- [ ] Add `app_theme.premium_required` key to English localizable strings → `App/Vreader/Vreader/en.lproj/Localizable.strings`
+- [ ] Add `app_theme.premium_required` key to Russian localizable strings → `App/Vreader/Vreader/ru.lproj/Localizable.strings`
+- [ ] Extend `DesignTokens.swift` with theme corner radius constants referenced by theme implementations → `App/Vreader/Vreader/DesignTokens.swift`
+- [ ] Write unit tests in `VreaderTests.swift` covering: `ThemeStore.availableThemes` count == 4, `isUnlocked` returns `false` for premium themes when `isPremiumUser = false`, `isUnlocked` returns `true` for free themes always, `setTheme` throws `AppThemeError.premiumRequired` for premium theme + non-premium user, `setTheme` succeeds for free theme, `currentTheme` returns correct type for each `ThemeID`, `UserDefaults` persistence round-trip → `App/Vreader/VreaderTests/VreaderTests.swift`

@@ -1,20 +1,6 @@
 import Foundation
 import SwiftUI
 
-// MARK: - Как работает локализация в VReader
-//
-// iOS автоматически выбирает язык на основе Settings → Language.
-// Никакого кода для определения языка не нужно — это делает система.
-//
-// Структура файлов:
-//   ru.lproj/Localizable.strings  ← русский (основной)
-//   en.lproj/Localizable.strings  ← английский
-//
-// В SwiftUI Text("some.key") автоматически ищет ключ в Localizable.strings.
-// Для динамических строк — String(localized: "key") или L10n.key.
-//
-// Чтобы добавить новый язык — создать папку xx.lproj и скопировать .strings.
-
 // MARK: - L10n namespace
 
 enum L10n {
@@ -174,6 +160,14 @@ enum L10n {
         static let reading = String(localized: "common.reading",  defaultValue: "Чтение")
         static let add     = String(localized: "common.add",      defaultValue: "Добавить")
         static let delete  = String(localized: "common.delete",   defaultValue: "Удалить")
+    }
+
+    // MARK: AppTheme
+    enum AppTheme {
+        static let premiumRequired = String(
+            localized: "app_theme.premium_required",
+            defaultValue: "Эта тема доступна только в Premium-версии"
+        )
     }
 }
 

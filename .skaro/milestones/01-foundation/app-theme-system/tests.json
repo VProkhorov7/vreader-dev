@@ -1,0 +1,82 @@
+{
+  "checklist": [
+    {
+      "id": "test_files_exist",
+      "label": "Test files present",
+      "passed": false,
+      "detail": "No test files found"
+    },
+    {
+      "id": "spec_exists",
+      "label": "Specification filled",
+      "passed": true,
+      "detail": "6259 chars"
+    },
+    {
+      "id": "stages_complete",
+      "label": "All stages implemented",
+      "passed": true,
+      "detail": "1/1 stages"
+    }
+  ],
+  "task_commands": [
+    {
+      "name": "name:",
+      "command": "name: Build project (compile check)",
+      "success": false,
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "/bin/sh: -c: line 0: syntax error near unexpected token `('\n/bin/sh: -c: line 0: `name: Build project (compile check)'\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Run unit tests",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check no Color literals outside Theme files",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check L10n key exists in English strings",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check L10n key exists in Russian strings",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check ThemeID has 4 cases",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check no force-unwrap in new theme files",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    }
+  ],
+  "passed": false,
+  "timestamp": "2026-03-30T19:58:09.376762"
+}

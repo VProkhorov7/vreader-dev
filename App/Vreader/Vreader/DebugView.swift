@@ -6,6 +6,7 @@ struct DebugView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var books: [Book]
     @State private var path = NavigationPath()
+    @ObservedObject private var themeManager = ThemeManager.shared
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -99,6 +100,11 @@ struct DebugView: View {
             LabeledContent("книг в БД", value: "\(books.count)")
             LabeledContent("читаются", value: "\(books.filter { $0.progress > 0 && $0.progress < 1 }.count)")
             LabeledContent("прочитаны", value: "\(books.filter { $0.isFinished }.count)")
+            Picker("Тема", selection: $themeManager.current) {
+                ForEach(AppTheme.allCases) { theme in
+                    Text(theme.displayName).tag(theme)
+                }
+            }
         }
     }
 
