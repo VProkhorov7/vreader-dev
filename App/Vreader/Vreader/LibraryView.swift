@@ -29,9 +29,15 @@ struct LibraryView: View {
             contentView
                 .navigationTitle(L10n.Library.title)
                 .toolbar { toolbarContent }
+                #if os(iOS)
                 .fullScreenCover(item: $selectedBook) { book in
                     ReaderView(book: book)
                 }
+                #else
+                .sheet(item: $selectedBook) { book in
+                    ReaderView(book: book)
+                }
+                #endif
                 .sheet(item: $selectedDetail) { book in
                     BookDetailView(book: book)
                 }

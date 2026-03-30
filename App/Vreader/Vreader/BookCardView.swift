@@ -91,10 +91,20 @@ private struct CoverView: View {
         .aspectRatio(2/3, contentMode: .fit)
     }
 
+    private func loadImage(contentsOfFile path: String) -> Image? {
+        #if os(iOS)
+        guard let img = UIImage(contentsOfFile: path) else { return nil }
+        return Image(uiImage: img)
+        #else
+        guard let img = NSImage(contentsOfFile: path) else { return nil }
+        return Image(nsImage: img)
+        #endif
+    }
+
     @ViewBuilder
     private var coverContent: some View {
-        if let path = book.coverPath, let uiImage = UIImage(contentsOfFile: path) {
-            Image(uiImage: uiImage)
+        if let path = book.coverPath, let image = loadImage(contentsOfFile: path) {
+            image
                 .resizable()
                 .scaledToFill()
         } else {

@@ -1,6 +1,7 @@
 import SwiftUI
 import WebKit
 
+#if os(iOS)
 struct CHMReaderView: UIViewRepresentable {
     let book:         Book
     @Binding var currentPage:  Int
@@ -125,3 +126,14 @@ struct CHMReaderView: UIViewRepresentable {
         }
     }
 }
+#else
+struct CHMReaderView: View {
+    let book: Book
+    @Binding var currentPage: Int
+    @Binding var totalPages: Int
+    var onTap: (() -> Void)?
+    var onSwipeDown: (() -> Void)?
+    var onPageChange: (() -> Void)?
+    var body: some View { EmptyView() }
+}
+#endif

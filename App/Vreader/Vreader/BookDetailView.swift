@@ -31,9 +31,11 @@ struct BookDetailView: View {
                 // Нижняя плашка с кнопкой — всегда видна
                 bottomActionBar
             }
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .cancellationAction) {
                     Button {
                         dismiss()
                     } label: {
@@ -47,28 +49,36 @@ struct BookDetailView: View {
                     }
                 }
             }
+            #if os(iOS)
             .toolbarBackground(.hidden, for: .navigationBar)
+            #endif
         }
+        #if os(iOS)
         .fullScreenCover(isPresented: $openReader) {
             ReaderView(book: book)
         }
+        #else
+        .sheet(isPresented: $openReader) {
+            ReaderView(book: book)
+        }
+        #endif
     }
 
     // MARK: - Фон
 
     private var backgroundLayer: some View {
         ZStack {
-            if let path = book.coverPath, let img = UIImage(contentsOfFile: path) {
-                Image(uiImage: img)
+            if let path = book.coverPath, let img = loadImage(contentsOfFile: path) {
+                img
                     .resizable().scaledToFill()
                     .blur(radius: 40).scaleEffect(1.2).opacity(0.35)
             } else {
                 LinearGradient(
-                    colors: [book.color.opacity(0.25), Color(uiColor: .systemBackground)],
+                    colors: [book.color.opacity(0.25), systemBgColor],
                     startPoint: .top, endPoint: .bottom
                 )
             }
-            Color(uiColor: .systemBackground).opacity(0.5)
+            systemBgColor.opacity(0.5)
         }
         .ignoresSafeArea()
     }
@@ -80,8 +90,8 @@ struct BookDetailView: View {
             Spacer().frame(height: 72)
 
             Group {
-                if let path = book.coverPath, let img = UIImage(contentsOfFile: path) {
-                    Image(uiImage: img).resizable().scaledToFit()
+                if let path = book.coverPath, let img = loadImage(contentsOfFile: path) {
+                    img.resizable().scaledToFit()
                 } else {
                     ZStack {
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -142,7 +152,7 @@ struct BookDetailView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 28, style: .continuous)
-                .fill(Color(uiColor: .systemBackground))
+                .fill(systemBgColor)
                 .ignoresSafeArea(edges: .bottom)
         )
     }
@@ -244,6 +254,24 @@ struct BookDetailView: View {
                     .multilineTextAlignment(.center)
             }
         }
+    }
+
+    private var systemBgColor: Color {
+        #if os(iOS)
+        Color(UIColor.systemBackground)
+        #else
+        Color(NSColor.windowBackgroundColor)
+        #endif
+    }
+
+    private func loadImage(contentsOfFile path: String) -> Image? {
+        #if os(iOS)
+        guard let img = UIImage(contentsOfFile: path) else { return nil }
+        return Image(uiImage: img)
+        #else
+        guard let img = NSImage(contentsOfFile: path) else { return nil }
+        return Image(nsImage: img)
+        #endif
     }
 
     // MARK: - Скачивание

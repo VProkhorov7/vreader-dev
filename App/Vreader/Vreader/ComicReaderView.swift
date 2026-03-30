@@ -304,4 +304,14 @@ struct ComicErrorView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+#else
+struct ComicReaderView: View {
+    let book: Book
+    @Binding var currentPage: Int
+    @Binding var totalPages: Int
+    var onTap: (() -> Void)?
+    var onSwipeDown: (() -> Void)?
+    var onPageChange: (() -> Void)?
+    var body: some View { EmptyView() }
+}
 #endif

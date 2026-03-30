@@ -1,6 +1,7 @@
 import SwiftUI
 import WebKit
 
+#if os(iOS)
 struct EPUBWebView: UIViewRepresentable {
     let chapter:     EPUBChapter
     let fontSize:    Double
@@ -149,6 +150,20 @@ struct EPUBWebView: UIViewRepresentable {
         }
     }
 }
+#else
+struct EPUBWebView: View {
+    let chapter: EPUBChapter
+    let fontSize: Double
+    let lineSpacing: Double
+    let theme: String
+    var scrollMode: String = "page_horizontal"
+    var onTap: (() -> Void)?
+    var onSwipeDown: (() -> Void)?
+    var onSwipeLeft: (() -> Void)?
+    var onSwipeRight: (() -> Void)?
+    var body: some View { EmptyView() }
+}
+#endif
 
 struct EPUBReaderView: View {
     let book:     Book

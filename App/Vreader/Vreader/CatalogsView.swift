@@ -26,7 +26,9 @@ struct CatalogsView: View {
             }
         }
         .navigationTitle(L10n.Catalogs.title)
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
+        #endif
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
@@ -177,7 +179,11 @@ struct OnlineCatalogsSection: View {
                 Label(L10n.Common.add, systemImage: "plus.circle")
             }
         }
+        #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.inset)
+        #endif
         .sheet(item: $connectingCatalog) { config in
             ConnectBuiltInCatalogSheet(config: config)
         }
@@ -245,7 +251,11 @@ struct CloudStorageSection: View {
                 Label(L10n.Catalogs.available, systemImage: "plus.circle")
             }
         }
+        #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.inset)
+        #endif
         .sheet(isPresented: $showAddSheet, onDismiss: { selectedType = nil }) {
             AddCloudAccountSheet(preselectedType: selectedType)
         }
@@ -328,7 +338,9 @@ struct ConnectBuiltInCatalogSheet: View {
                 .padding(.horizontal, 24)
                 .padding(.bottom, 32)
             }
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(L10n.Common.done) { dismiss() }
@@ -357,8 +369,10 @@ struct AddOPDSCatalogSheet: View {
                 Section(L10n.Catalogs.OPDS.catalog) {
                     TextField(L10n.Catalogs.OPDS.namePlaceholder, text: $name)
                     TextField(L10n.Catalogs.OPDS.urlPlaceholder, text: $url)
+                        #if os(iOS)
                         .autocapitalization(.none)
                         .keyboardType(.URL)
+                        #endif
                         .autocorrectionDisabled()
                     Text(L10n.Catalogs.OPDS.urlHint)
                         .font(.caption)
@@ -367,7 +381,9 @@ struct AddOPDSCatalogSheet: View {
 
                 Section(L10n.Catalogs.OPDS.authSection) {
                     TextField(L10n.Catalogs.CloudForm.login, text: $login)
+                        #if os(iOS)
                         .autocapitalization(.none)
+                        #endif
                         .textContentType(.username)
                     SecureField(L10n.Catalogs.CloudForm.password, text: $password)
                         .textContentType(.password)
@@ -405,7 +421,9 @@ struct AddOPDSCatalogSheet: View {
                 }
             }
             .navigationTitle(L10n.Catalogs.OPDS.addTitle)
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(L10n.Common.cancel) { dismiss() }
@@ -499,10 +517,14 @@ struct AddCloudAccountSheet: View {
 
                 Section(L10n.Catalogs.CloudForm.connection) {
                     TextField(L10n.Catalogs.CloudForm.serverAddr, text: $host)
+                        #if os(iOS)
                         .autocapitalization(.none)
                         .keyboardType(.URL)
+                        #endif
                     TextField(L10n.Catalogs.CloudForm.login, text: $login)
+                        #if os(iOS)
                         .autocapitalization(.none)
+                        #endif
                         .textContentType(.username)
                     SecureField(L10n.Catalogs.CloudForm.password, text: $password)
                         .textContentType(.password)

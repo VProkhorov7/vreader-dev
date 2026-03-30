@@ -20,6 +20,7 @@ import PDFKit
 
 // MARK: - PDFKit враппер
 
+#if os(iOS)
 struct PDFKitView: UIViewRepresentable {
     let url:         URL
     @Binding var currentPage: Int
@@ -126,6 +127,18 @@ struct PDFKitView: UIViewRepresentable {
         }
     }
 }
+#else
+struct PDFKitView: View {
+    let url: URL
+    @Binding var currentPage: Int
+    @Binding var totalPages: Int
+    var scrollMode: String = "page_horizontal"
+    var onTap: (() -> Void)?
+    var onSwipeDown: (() -> Void)?
+    var onPageChange: (() -> Void)?
+    var body: some View { EmptyView() }
+}
+#endif
 
 // MARK: - Главный экран ридера
 

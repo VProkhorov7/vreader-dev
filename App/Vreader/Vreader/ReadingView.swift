@@ -49,9 +49,15 @@ struct ReadingView: View {
             .padding(.vertical, 16)
         }
         .navigationTitle("Читаю")
+        #if os(iOS)
         .fullScreenCover(item: $selectedBook) { book in
             ReaderView(book: book)
         }
+        #else
+        .sheet(item: $selectedBook) { book in
+            ReaderView(book: book)
+        }
+        #endif
     }
 }
 

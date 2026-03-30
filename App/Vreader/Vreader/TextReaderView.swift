@@ -2,6 +2,7 @@ import SwiftUI
 import Foundation
 import WebKit
 
+#if os(iOS)
 struct TextReaderView: UIViewRepresentable {
     let book:         Book
     @Binding var currentPage:  Int
@@ -231,3 +232,14 @@ struct TextReaderView: UIViewRepresentable {
         }
     }
 }
+#else
+struct TextReaderView: View {
+    let book: Book
+    @Binding var currentPage: Int
+    @Binding var totalPages: Int
+    var onTap: (() -> Void)?
+    var onSwipeDown: (() -> Void)?
+    var onPageChange: (() -> Void)?
+    var body: some View { EmptyView() }
+}
+#endif

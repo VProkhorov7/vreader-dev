@@ -98,7 +98,9 @@ struct SettingsView: View {
                 #endif
             }
             .navigationTitle("Настройки")
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.large)
+            #endif
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Готово") { dismiss() }

@@ -15,7 +15,9 @@ final class AudioPlayerViewModel: ObservableObject {
     @Published var speed:         Float = 1.0
     @Published var title          = ""
     @Published var artist         = ""
-    @Published var artworkImage:  UIImage?
+    #if os(iOS)
+    @Published var artworkImage: UIImage?
+    #endif
 
     private var player:       AVPlayer?
     private var timeObserver: Any?
@@ -34,10 +36,12 @@ final class AudioPlayerViewModel: ObservableObject {
         guard let url = book.fileURL else { return }
         self.book = book
 
+        #if os(iOS)
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio)
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {}
+        #endif
 
         let asset = AVURLAsset(url: url)
         let item  = AVPlayerItem(asset: asset)
@@ -129,7 +133,9 @@ final class AudioPlayerViewModel: ObservableObject {
                 if let v = try? await item.load(.stringValue) { artist = v }
             case .commonKeyArtwork:
                 if let data = try? await item.load(.dataValue) {
+                    #if os(iOS)
                     artworkImage = UIImage(data: data)
+                    #endif
                 }
             default: break
             }
@@ -182,7 +188,9 @@ final class AudioPlayerViewModel: ObservableObject {
         if let obs = timeObserver { player?.removeTimeObserver(obs) }
         MPRemoteCommandCenter.shared().playCommand.removeTarget(nil)
         MPRemoteCommandCenter.shared().pauseCommand.removeTarget(nil)
+        #if os(iOS)
         do { try AVAudioSession.sharedInstance().setActive(false) } catch {}
+        #endif
     }
 }
 
@@ -266,8 +274,21 @@ struct AudioPlayerView: View {
 
     // MARK: - Sections
 
+    private var artworkFallback: some View {
+        RoundedRectangle(cornerRadius: 16)
+            .fill(book.color.gradient)
+            .aspectRatio(1, contentMode: .fit)
+            .overlay(
+                Image(systemName: "headphones")
+                    .font(.system(size: 64, weight: .ultraLight))
+                    .foregroundStyle(.white.opacity(0.8))
+            )
+            .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 8)
+    }
+
     private var coverSection: some View {
         Group {
+            #if os(iOS)
             if let img = vm.artworkImage {
                 Image(uiImage: img)
                     .resizable()
@@ -275,16 +296,11 @@ struct AudioPlayerView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 8)
             } else {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(book.color.gradient)
-                    .aspectRatio(1, contentMode: .fit)
-                    .overlay(
-                        Image(systemName: "headphones")
-                            .font(.system(size: 64, weight: .ultraLight))
-                            .foregroundStyle(.white.opacity(0.8))
-                    )
-                    .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 8)
+                artworkFallback
             }
+            #else
+            artworkFallback
+            #endif
         }
         .frame(maxHeight: 260)
     }
