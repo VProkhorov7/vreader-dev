@@ -5,8 +5,8 @@
 """
 import re, os, sys
 
-PROJECT = '/mnt/project'
-OUTPUTS = '/mnt/user-data/outputs'
+PROJECT = os.path.join(os.path.dirname(__file__), '../App/Vreader/Vreader')
+OUTPUTS = PROJECT
 
 def load_final():
     final = {}

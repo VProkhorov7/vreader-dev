@@ -162,8 +162,8 @@ enum L10n {
         static let delete  = String(localized: "common.delete",   defaultValue: "Удалить")
     }
 
-    // MARK: AppTheme
-    enum AppTheme {
+    // MARK: AppThemeNames
+    enum AppThemeNames {
         static let premiumRequired = String(
             localized: "app_theme.premium_required",
             defaultValue: "Эта тема доступна только в Premium-версии"
