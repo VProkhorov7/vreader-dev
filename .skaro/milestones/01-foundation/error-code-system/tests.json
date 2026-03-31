@@ -1,0 +1,114 @@
+{
+  "checklist": [
+    {
+      "id": "test_files_exist",
+      "label": "Test files present",
+      "passed": false,
+      "detail": "No test files found"
+    },
+    {
+      "id": "spec_exists",
+      "label": "Specification filled",
+      "passed": true,
+      "detail": "4690 chars"
+    },
+    {
+      "id": "stages_complete",
+      "label": "All stages implemented",
+      "passed": true,
+      "detail": "2/2 stages"
+    }
+  ],
+  "task_commands": [
+    {
+      "name": "name:",
+      "command": "name: Check old ErrorCode.swift deleted (App target)",
+      "success": false,
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "/bin/sh: -c: line 0: syntax error near unexpected token `('\n/bin/sh: -c: line 0: `name: Check old ErrorCode.swift deleted (App target)'\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check old ErrorCode.swift deleted (root target)",
+      "success": false,
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "/bin/sh: -c: line 0: syntax error near unexpected token `('\n/bin/sh: -c: line 0: `name: Check old ErrorCode.swift deleted (root target)'\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check AppError.swift exists (App target)",
+      "success": false,
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "/bin/sh: -c: line 0: syntax error near unexpected token `('\n/bin/sh: -c: line 0: `name: Check AppError.swift exists (App target)'\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check AppError.swift exists (root target)",
+      "success": false,
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "/bin/sh: -c: line 0: syntax error near unexpected token `('\n/bin/sh: -c: line 0: `name: Check AppError.swift exists (root target)'\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check no remaining references to old ErrorCode type",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check analyticsCode format (no slashes, no spaces, dot-separated only)",
+      "success": false,
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "/bin/sh: -c: line 0: syntax error near unexpected token `('\n/bin/sh: -c: line 0: `name: Check analyticsCode format (no slashes, no spaces, dot-separated only)'\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check TODO L10n comments present",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check AI_NOTES.md exists",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check Sendable conformances present",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Build App target",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Run unit tests",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    }
+  ],
+  "passed": false,
+  "timestamp": "2026-03-31T22:07:30.873165"
+}

@@ -2,7 +2,6 @@ import Foundation
 import SwiftUI
 import Observation
 
-// Поддерживаемые форматы — все форматы которые ReaderView умеет открывать
 enum BookFormat: String, CaseIterable {
     case pdf   = "pdf"
     case epub  = "epub"
@@ -22,7 +21,6 @@ enum BookFormat: String, CaseIterable {
     case m4b   = "m4b"
 
     init?(url: URL) {
-        // Обрабатываем двойное расширение fb2.zip → fb2
         let name = url.lastPathComponent.lowercased()
         if name.hasSuffix(".fb2.zip") {
             self = .fb2; return
@@ -30,7 +28,6 @@ enum BookFormat: String, CaseIterable {
         self.init(rawValue: url.pathExtension.lowercased())
     }
 
-    /// Категория для UI и логики ридера
     var isAudio: Bool { self == .mp3 || self == .m4a || self == .m4b }
     var isComic: Bool { self == .cbz || self == .cbr || self == .cb7 || self == .cbt }
 }
@@ -41,8 +38,8 @@ enum ImportError: Error, LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .unsupportedFormat(let e): return "Формат не поддерживается: \(e)"
-        case .copyFailed(let e):        return "Ошибка копирования: \(e)"
+        case .unsupportedFormat(let e): return "Unsupported format: \(e)"
+        case .copyFailed(let e):        return "Copy failed: \(e)"
         }
     }
 }
@@ -63,31 +60,24 @@ final class BookImporter {
         guard let format = BookFormat(url: sourceURL) else {
             throw ImportError.unsupportedFormat(sourceURL.pathExtension)
         }
-
-        // Для fb2.zip сохраняем как .fb2
-        let ext      = format.rawValue
-        let destURL  = booksDirectory.appendingPathComponent("\(UUID().uuidString).\(ext)")
-
+        let dest = booksDirectory.appendingPathComponent(sourceURL.lastPathComponent)
         do {
-            try FileManager.default.copyItem(at: sourceURL, to: destURL)
+            if FileManager.default.fileExists(atPath: dest.path) {
+                try FileManager.default.removeItem(at: dest)
+            }
+            try FileManager.default.copyItem(at: sourceURL, to: dest)
         } catch {
             throw ImportError.copyFailed(error.localizedDescription)
         }
-
-        let attrs    = try? FileManager.default.attributesOfItem(atPath: destURL.path)
-        let fileSize = attrs?[.size] as? Int64 ?? 0
-
-        let title = sourceURL
-            .deletingPathExtension()
-            .lastPathComponent
-            .removingPercentEncoding ?? sourceURL.lastPathComponent
-
+        let attrs  = try? FileManager.default.attributesOfItem(atPath: dest.path)
+        let size   = (attrs?[.size] as? Int64) ?? 0
+        let title  = sourceURL.deletingPathExtension().lastPathComponent
         return Book(
             title:    title,
-            filePath: destURL.path,
-            format:   ext,
+            filePath: dest.path,
+            format:   format.rawValue,
             source:   source,
-            fileSize: fileSize
+            fileSize: size
         )
     }
 }

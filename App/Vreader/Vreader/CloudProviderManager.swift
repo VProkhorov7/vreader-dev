@@ -1,4 +1,3 @@
-// CloudProviderManager.swift
 import Foundation
 import Combine
 
@@ -10,9 +9,7 @@ final class CloudProviderManager: ObservableObject {
     @Published var activeProvider: (any CloudProviderProtocol)?
 
     private init() {
-        // Регистрируем провайдеры при запуске
         register(ICloudProvider())
-        // WebDAV провайдеры — загружаем из iCloudSettingsStore
     }
 
     func register(_ provider: any CloudProviderProtocol) {

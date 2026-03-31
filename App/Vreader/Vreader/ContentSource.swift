@@ -19,7 +19,7 @@ enum ContentSourceStatus {
     case disconnected
     case connecting
     case connected
-    case error(ErrorCode)
+    case error(AppError)
 }
 
 protocol ContentSource {
@@ -28,12 +28,7 @@ protocol ContentSource {
     var displayName: String { get }
     var status: ContentSourceStatus { get }
 
-    /// Check connection — called from setup wizard
-    func testConnection(completion: @escaping (Result<Void, ErrorCode>) -> Void)
-
-    /// List available books
-    func listBooks(completion: @escaping (Result<[Book], ErrorCode>) -> Void)
-
-    /// Create download task for a book
+    func testConnection(completion: @escaping (Result<Void, AppError>) -> Void)
+    func listBooks(completion: @escaping (Result<[Book], AppError>) -> Void)
     func makeDownloadTask(for book: Book) -> DownloadTask?
 }

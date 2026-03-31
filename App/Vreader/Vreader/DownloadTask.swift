@@ -25,7 +25,7 @@ protocol DownloadTask: AnyObject {
 
     var state: DownloadState { get }
     var progress: DownloadProgress { get }
-    var error: ErrorCode? { get }
+    var error: AppError? { get }
 
     func start()
     func pause()
