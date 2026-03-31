@@ -472,7 +472,7 @@ struct ReaderView: View {
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
-                        Text(L10n.Reader.contents).font(.headline)
+                        Text(L10n.ReaderKeys.contents).font(.headline)
                         Spacer()
                         Button { withAnimation { isVisible = false } } label: {
                             Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary).font(.system(size: 22))
@@ -483,7 +483,7 @@ struct ReaderView: View {
                     List {
                         ForEach(1...10, id: \.self) { i in
                             HStack {
-                                Text("\(L10n.Reader.chapter) \(i)").font(.body)
+                                Text("\(L10n.ReaderKeys.chapter) \(i)").font(.body)
                                 Spacer()
                                 Text("\(i * 18)").font(.caption).foregroundStyle(.secondary)
                             }
@@ -520,7 +520,7 @@ struct ReaderView: View {
 
                 VStack(alignment: .leading, spacing: 20) {
                     HStack {
-                        Text(L10n.Reader.appearance).font(.headline)
+                        Text(L10n.ReaderKeys.appearance).font(.headline)
                         Spacer()
                         Button { withAnimation { isVisible = false } } label: {
                             Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary).font(.system(size: 22))
@@ -528,20 +528,20 @@ struct ReaderView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(L10n.Reader.theme).font(.caption).foregroundStyle(.secondary)
+                        Text(L10n.ReaderKeys.theme).font(.caption).foregroundStyle(.secondary)
                         HStack(spacing: 12) {
-                            ThemeButton(label: L10n.Reader.Theme.light, color: Color.white, textColor: Color.black,
+                            ThemeButton(label: L10n.ReaderKeys.ThemeNames.light, color: Color.white, textColor: Color.black,
                                         isSelected: settings.readerTheme == "light") { settings.readerTheme = "light" }
-                            ThemeButton(label: L10n.Reader.Theme.sepia, color: Color(red: 0.97, green: 0.93, blue: 0.82), textColor: Color.black,
+                            ThemeButton(label: L10n.ReaderKeys.ThemeNames.sepia, color: Color(red: 0.97, green: 0.93, blue: 0.82), textColor: Color.black,
                                         isSelected: settings.readerTheme == "sepia") { settings.readerTheme = "sepia" }
-                            ThemeButton(label: L10n.Reader.Theme.dark, color: Color(white: 0.2), textColor: Color.white,
+                            ThemeButton(label: L10n.ReaderKeys.ThemeNames.dark, color: Color(white: 0.2), textColor: Color.white,
                                         isSelected: settings.readerTheme == "dark") { settings.readerTheme = "dark" }
                         }
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text(L10n.Reader.fontSize).font(.caption).foregroundStyle(.secondary)
+                            Text(L10n.ReaderKeys.fontSize).font(.caption).foregroundStyle(.secondary)
                             Spacer()
                             Text("\(Int(settings.fontSize))pt").font(.caption.bold()).foregroundStyle(.secondary)
                         }
@@ -553,28 +553,28 @@ struct ReaderView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(L10n.Reader.lineSpacing).font(.caption).foregroundStyle(.secondary)
+                        Text(L10n.ReaderKeys.lineSpacing).font(.caption).foregroundStyle(.secondary)
                         HStack(spacing: 12) {
-                            SpacingButton(label: L10n.Reader.Spacing.narrow, value: 1.2, current: settings.lineSpacing) { settings.lineSpacing = 1.2 }
-                            SpacingButton(label: L10n.Reader.Spacing.medium, value: 1.6, current: settings.lineSpacing) { settings.lineSpacing = 1.6 }
-                            SpacingButton(label: L10n.Reader.Spacing.wide,   value: 2.0, current: settings.lineSpacing) { settings.lineSpacing = 2.0 }
+                            SpacingButton(label: L10n.ReaderKeys.SpacingKeys.narrow, value: 1.2, current: settings.lineSpacing) { settings.lineSpacing = 1.2 }
+                            SpacingButton(label: L10n.ReaderKeys.SpacingKeys.medium, value: 1.6, current: settings.lineSpacing) { settings.lineSpacing = 1.6 }
+                            SpacingButton(label: L10n.ReaderKeys.SpacingKeys.wide,   value: 2.0, current: settings.lineSpacing) { settings.lineSpacing = 2.0 }
                         }
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(L10n.Reader.scrollMode).font(.caption).foregroundStyle(.secondary)
+                        Text(L10n.ReaderKeys.scrollMode).font(.caption).foregroundStyle(.secondary)
                         VStack(spacing: 6) {
-                            ScrollModeButton(label: L10n.Reader.Scroll.pageHorizontal,   icon: "rectangle.portrait.on.rectangle.portrait",
+                            ScrollModeButton(label: L10n.ReaderKeys.Scroll.pageHorizontal,   icon: "rectangle.portrait.on.rectangle.portrait",
                                              value: "page_horizontal",  current: settings.scrollMode) { settings.scrollMode = "page_horizontal" }
-                            ScrollModeButton(label: L10n.Reader.Scroll.scrollVertical,   icon: "scroll",
+                            ScrollModeButton(label: L10n.ReaderKeys.Scroll.scrollVertical,   icon: "scroll",
                                              value: "scroll_vertical",  current: settings.scrollMode) { settings.scrollMode = "scroll_vertical" }
-                            ScrollModeButton(label: L10n.Reader.Scroll.scrollHorizontal, icon: "arrow.left.and.right",
+                            ScrollModeButton(label: L10n.ReaderKeys.Scroll.scrollHorizontal, icon: "arrow.left.and.right",
                                              value: "scroll_horizontal", current: settings.scrollMode) { settings.scrollMode = "scroll_horizontal" }
                         }
                     }
 
                     VStack(alignment: .leading, spacing: 10) {
-                        Text(L10n.Reader.languageScript).font(.caption).foregroundStyle(.secondary)
+                        Text(L10n.ReaderKeys.languageScript).font(.caption).foregroundStyle(.secondary)
 
                         Toggle(isOn: $settings.verticalTextMode) {
                             HStack(spacing: 8) {
@@ -582,9 +582,9 @@ struct ReaderView: View {
                                     .font(.system(size: 14))
                                     .frame(width: 20)
                                 VStack(alignment: .leading, spacing: 1) {
-                                    Text(L10n.Reader.verticalText)
+                                    Text(L10n.ReaderKeys.verticalText)
                                         .font(.caption)
-                                    Text(L10n.Reader.verticalTextHint)
+                                    Text(L10n.ReaderKeys.verticalTextHint)
                                         .font(.system(size: 10))
                                         .foregroundStyle(.tertiary)
                                 }
@@ -597,7 +597,7 @@ struct ReaderView: View {
                                 .font(.system(size: 13))
                                 .frame(width: 20)
                                 .foregroundStyle(.secondary)
-                            Text(L10n.Reader.rtlHint)
+                            Text(L10n.ReaderKeys.rtlHint)
                                 .font(.system(size: 10))
                                 .foregroundStyle(.tertiary)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -687,7 +687,7 @@ struct ReaderView: View {
             VStack(spacing: 16) {
                 Image(systemName: "doc.questionmark").font(.system(size: 56)).foregroundStyle(.secondary)
                 Text(String(format: NSLocalizedString("reader.format_unsupported", value: "Формат %@ не поддерживается", comment: ""), format.uppercased())).font(.headline).foregroundStyle(.secondary)
-                Text(L10n.Reader.unsupportedFormats)
+                Text(L10n.ReaderKeys.unsupportedFormats)
                     .font(.subheadline).foregroundStyle(.tertiary).multilineTextAlignment(.center)
             }
             .padding(40).frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -699,9 +699,9 @@ struct ReaderView: View {
         var body: some View {
             VStack(spacing: 16) {
                 Image(systemName: "icloud.and.arrow.down").font(.system(size: 56)).foregroundStyle(.secondary)
-                Text(L10n.Reader.notDownloaded).font(.headline).foregroundStyle(.secondary)
+                Text(L10n.ReaderKeys.notDownloaded).font(.headline).foregroundStyle(.secondary)
                 Text(String(format: NSLocalizedString("reader.download_hint", value: "Скачайте «%@» для чтения офлайн", comment: ""), book.title)).font(.subheadline).foregroundStyle(.tertiary).multilineTextAlignment(.center)
-                Button { } label: { Label(L10n.Reader.download, systemImage: "arrow.down.circle.fill") }
+                Button { } label: { Label(L10n.ReaderKeys.download, systemImage: "arrow.down.circle.fill") }
                     .buttonStyle(.borderedProminent)
             }
             .padding(40).frame(maxWidth: .infinity, maxHeight: .infinity)

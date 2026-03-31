@@ -156,7 +156,7 @@ final class AudioPlayerViewModel: ObservableObject {
             let start = group.timeRange.start.seconds
             let end   = start + group.timeRange.duration.seconds
             
-            var title = "\(L10n.Reader.chapter) \(idx + 1)"
+            var title = "\(L10n.ReaderKeys.chapter) \(idx + 1)"
             if let titleItem = group.items.first(where: { $0.commonKey == .commonKeyTitle }) {
                 if let loadedTitle = try? await titleItem.load(.stringValue) {
                     title = loadedTitle

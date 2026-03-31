@@ -26,15 +26,19 @@ def strip_noise(code):
 
 SYSTEM = {
     'String','Int','Double','Bool','Date','UUID','URL','Data','Float','Int64','Int32',
+    'UInt64','UInt8','UInt16','UInt32',
     'Optional','Array','Set','Dictionary','Result','IndexSet','Error','Void','Any',
     'CGFloat','CGPoint','CGSize','CGRect','LocalizedError','Never','AnyHashable','AnyObject',
     'UnsafeMutableRawPointer','NSKeyValueChangeKey','URLSessionTask',
     'Locale','NSMetadataQueryUbiquitousDocumentsScope',
     'SecItemAdd','SecItemCopyMatching','SecItemDelete',
+    'TimeInterval','CharacterSet','Scanner','Decoder','Encoder',
+    'NSLocalizedString','NSAttributedString','NSRange','NSMutableAttributedString',
+    'UTType',
     'View','App','Scene','ObservableObject','Observable','Identifiable','Codable',
     'Hashable','Equatable','Comparable','CaseIterable','RawRepresentable','Sendable',
     'Published','State','Binding','StateObject','ObservedObject','EnvironmentObject',
-    'AppStorage','Environment','Query','FetchDescriptor','SortDescriptor',
+    'EnvironmentKey','AppStorage','Environment','Query','FetchDescriptor','SortDescriptor',
     'ModelContext','ModelContainer','ModelConfiguration','Schema',
     'URLSession','URLRequest','URLResponse','HTTPURLResponse','URLComponents',
     'URLQueryItem','URLCredential','URLResourceKey','FileManager',
@@ -42,22 +46,27 @@ SYSTEM = {
     'NSPredicate','NSMetadataQuery','NSUbiquitousKeyValueStore','NSError',
     'UIImage','NSImage','UIViewRepresentable','UIGestureRecognizer',
     'UITapGestureRecognizer','UISwipeGestureRecognizer','UIPanGestureRecognizer',
+    'UIView','UIScrollView','UIImageView','UIViewController',
     'WKWebView','WKWebViewConfiguration','WKNavigationDelegate',
     'WKNavigationAction','WKNavigationActionPolicy','WKScriptMessage',
-    'WKUserContentController','WKScriptMessageHandler',
+    'WKUserContentController','WKScriptMessageHandler','WKNavigation',
     'PDFView','PDFDocument','PDFPage','Archive',
+    'AVPlayer','AVPlayerItem','AVURLAsset','AVMetadataItem','CMTime',
     'Task','DispatchQueue','MainActor','Timer','NotificationCenter',
     'Notification','UserDefaults','Bundle','OSStatus','Progress',
     'AnyCancellable','AnyPublisher',
     'Color','Font','Image','Text','Button','Spacer','Divider','List','ForEach',
-    'VStack','HStack','ZStack','ScrollView','NavigationStack','NavigationLink',
+    'VStack','HStack','ZStack','LazyVStack','LazyHStack',
+    'ScrollView','NavigationStack','NavigationLink','NavigationPath',
     'TabView','Form','Section','Label','Slider','Picker','TextField','SecureField',
+    'Toggle','EmptyView','StrokeStyle','LabeledContent',
     'Group','GeometryReader','GeometryProxy','ContentUnavailableView','ProgressView',
     'RoundedRectangle','Rectangle','Capsule','Circle','LinearGradient','Animation',
     'ViewBuilder','ToolbarItem','ByteCountFormatter','DateFormatter',
     'GridItem','LazyVGrid','DragGesture','TapGesture','UnitPoint','Self',
     'ProgressView','ScrollView','NavigationStack','Sheet','Toolbar',
     'ToolbarItem','ToolbarItemPlacement',
+    'SwiftUI','Foundation','AVFoundation','UIKit','WebKit',
     'Context','Coordinator','Keys',
 }
 
@@ -67,11 +76,16 @@ final = load_final()
 # --- 1. Дубликаты типов ---
 definitions = {}
 for fname, (src, content) in final.items():
-    for m in re.finditer(r'\b(?:struct|final class|class|enum|protocol|actor)\s+([A-Z]\w+)', content):
-        definitions.setdefault(m.group(1), []).append((fname, src))
+    seen_in_file = set()
+    for m in re.finditer(r'\b(?:struct|final class|class|enum|protocol|actor|typealias)\s+([A-Z]\w+)', content):
+        name = m.group(1)
+        if name in seen_in_file:
+            continue
+        seen_in_file.add(name)
+        definitions.setdefault(name, []).append((fname, src))
 
 dups = {k: v for k, v in definitions.items()
-        if len(v) > 1 and k not in ('Coordinator',)}  # Coordinator — nested, не конфликт
+        if len({fname for fname, _ in v}) > 1 and k not in ('Coordinator',)}  # Coordinator — nested, не конфликт
 if dups:
     ok = False
     print("❌ ДУБЛИКАТЫ ТИПОВ:")

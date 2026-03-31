@@ -26,7 +26,7 @@ enum L10n {
     }
 
     // MARK: Reader
-    enum Reader {
+    enum ReaderKeys {
         static let contents        = String(localized: "reader.contents",          defaultValue: "Содержание")
         static let appearance      = String(localized: "reader.appearance",        defaultValue: "Оформление")
         static let theme           = String(localized: "reader.theme",             defaultValue: "Тема")
@@ -39,7 +39,7 @@ enum L10n {
         static let rtlHint           = String(localized: "reader.rtl_hint",            defaultValue: "Направление (RTL) для арабского определяется автоматически")
         static let unsupportedFormats = String(localized: "reader.unsupported_formats", defaultValue: "Поддерживаемые форматы: PDF, EPUB, FB2, TXT, RTF, CBZ, CBR, MP3, M4B")
 
-        enum Theme {
+        enum ThemeNames {
             static let light = String(localized: "reader.theme.light", defaultValue: "Светлая")
             static let sepia = String(localized: "reader.theme.sepia", defaultValue: "Сепия")
             static let dark  = String(localized: "reader.theme.dark",  defaultValue: "Тёмная")
@@ -51,7 +51,7 @@ enum L10n {
             static let scrollHorizontal = String(localized: "reader.scroll.horizontal", defaultValue: "Полотно →")
         }
 
-        enum Spacing {
+        enum SpacingKeys {
             static let narrow  = String(localized: "reader.spacing.narrow",  defaultValue: "Узкий")
             static let medium  = String(localized: "reader.spacing.medium",  defaultValue: "Средний")
             static let wide    = String(localized: "reader.spacing.wide",    defaultValue: "Широкий")
