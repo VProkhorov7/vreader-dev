@@ -1,26 +1,34 @@
 import Foundation
 
 enum ErrorCode: Error, Equatable, Codable {
-    // Network / HTTP
     case networkUnavailable
     case timeout
-    case httpStatus(Int)        // 401, 403, 404, 502 etc.
+    case httpStatus(Int)
 
-    // Authentication
     case invalidCredentials
-    case appPasswordRequired    // Yandex and similar services
+    case appPasswordRequired
     case tokenExpired
 
-    // Source / path
     case invalidURL
     case notFound
     case accessDenied
 
-    // File / format
     case unsupportedFormat
     case corruptFile
 
+    case authentication(OSStatusCode)
+
     case unknown
+}
+
+// MARK: - OSStatusCode
+
+enum OSStatusCode: Equatable, Codable {
+    case keychainAccessFailed
+    case keychainItemNotFound
+    case keychainDuplicateItem
+    case keychainUnexpectedData
+    case raw(Int32)
 }
 
 // MARK: - Human-readable descriptions
@@ -123,6 +131,12 @@ struct DefaultDiagnosticsService: DiagnosticsService {
                 title: "Wrong credentials",
                 message: "Username or password is incorrect.",
                 suggestedAction: "Double-check your login details and try again."
+            )
+        case .authentication:
+            return ErrorDescription(
+                title: "Keychain error",
+                message: "Secure credential storage could not be accessed.",
+                suggestedAction: "Restart the app and try again. If the issue persists, re-install the app."
             )
         case .unknown:
             return ErrorDescription(

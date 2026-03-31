@@ -204,3 +204,15 @@ enum AppError: Error, Sendable {
         }
     }
 }
+
+// MARK: - Factory
+
+extension AppError {
+    static func make(_ authError: AppError.AuthError) -> AppError {
+        .auth(authError)
+    }
+
+    static func make(_ code: AppError.AuthError, underlying: Error? = nil) -> AppError {
+        .auth(code)
+    }
+}

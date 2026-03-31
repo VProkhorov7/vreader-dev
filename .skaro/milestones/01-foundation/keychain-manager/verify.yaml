@@ -1,0 +1,21 @@
+- command: xcodebuild -project App/Vreader/Vreader.xcodeproj -scheme Vreader -destination
+    'platform=iOS Simulator,name=iPhone 16' build 2>&1 | tail -20
+  name: Swift build (App target)
+- command: xcodebuild test -project App/Vreader/Vreader.xcodeproj -scheme Vreader
+    -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:VreaderTests/KeychainManagerTests
+    2>&1 | tail -30
+  name: Unit tests (KeychainManager)
+- command: grep -n "!\." App/Vreader/Vreader/KeychainManager.swift || echo "OK - no
+    force unwrap"
+  name: Check no force-unwrap in KeychainManager
+- command: grep -n "^actor KeychainManager" App/Vreader/Vreader/KeychainManager.swift
+  name: Check actor declaration
+- command: grep -n "DiagnosticsService\|os_log\|Logger" App/Vreader/Vreader/KeychainManager.swift
+    | grep -v "key\|status\|OSStatus" || echo "OK"
+  name: Check no credential values in logs
+- command: grep -c "kSecAttrAccessibleAfterFirstUnlock" App/Vreader/Vreader/KeychainManager.swift
+  name: Check kSecAttrAccessibleAfterFirstUnlock present
+- command: grep -n "isSynchronizable" App/Vreader/Vreader/KeychainManager.swift
+  name: Check isSynchronizable property exists
+- command: grep -n "keychainDidInitialize" App/Vreader/Vreader/KeychainManager.swift
+  name: Check sentinel flag usage
