@@ -2,137 +2,356 @@
 """
 check_refs.py — VReader validation gate.
 Run before every merge. Exit 0 = pass, Exit 1 = fail.
+
+Usage:
+    python3 check_refs.py [scan_dir]
+
+    scan_dir defaults to App/Vreader/Vreader relative to this script.
 """
 
 import sys
 import re
-import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-SWIFT_DIR = ROOT / "App" / "Vreader" / "Vreader"
 
-errors = []
-warnings = []
+def resolve_scan_dir(argv):
+    if len(argv) > 1:
+        candidate = Path(argv[1])
+        if candidate.is_absolute():
+            return candidate
+        return ROOT / candidate
+    return ROOT / "App" / "Vreader" / "Vreader"
 
-def error(msg): errors.append(f"  ERROR: {msg}")
-def warn(msg): warnings.append(f"  WARN:  {msg}")
+SWIFT_DIR = resolve_scan_dir(sys.argv)
 
-def swift_files():
+EN_STRINGS = SWIFT_DIR / "en.lproj" / "Localizable.strings"
+RU_STRINGS = SWIFT_DIR / "ru.lproj" / "Localizable.strings"
+L10N_SWIFT = SWIFT_DIR / "L10n.swift"
+
+errors: list[str] = []
+warnings: list[str] = []
+
+def error(msg: str) -> None:
+    errors.append(f"  ERROR: {msg}")
+
+def warn(msg: str) -> None:
+    warnings.append(f"  WARN:  {msg}")
+
+def swift_files() -> list[Path]:
     return list(SWIFT_DIR.glob("**/*.swift"))
 
-# ── 1. Duplicate type definitions ──────────────────────────────────────────
-def check_duplicate_types():
-    type_pattern = re.compile(
-        r'^\s*(?:public |internal |private |fileprivate |open )*'
-        r'(?:final\s+)?(?:class|struct|enum|protocol|actor)\s+(\w+)',
-        re.MULTILINE
-    )
-    seen = {}
+def read_text(path: Path) -> str:
+    return path.read_text(encoding="utf-8", errors="ignore")
+
+
+# ── L10n namespace → dot-prefix mapping ────────────────────────────────────
+# Derived from the L10n enum structure in L10n.swift.
+# Each Swift namespace maps to a lowercase dot-notation prefix.
+L10N_NAMESPACE_MAP: dict[str, str] = {
+    "Library":   "library",
+    "Reader":    "reader",
+    "Settings":  "settings",
+    "Cloud":     "cloud",
+    "AI":        "ai",
+    "Premium":   "premium",
+    "Common":    "common",
+    "Errors":    "errors",
+    "Onboarding": "onboarding",
+}
+
+# Regex: matches L10n.<Namespace>.<key> as property access or function call.
+# Group 1 = Namespace, Group 2 = key (camelCase identifier)
+_L10N_REF_RE = re.compile(
+    r'\bL10n\.([A-Z][A-Za-z]*)\.([a-z][A-Za-z0-9]*)'
+)
+
+
+def camel_to_dot(namespace: str, key: str) -> str | None:
+    """
+    Convert L10n.<Namespace>.<key> to the dot-notation string key used in
+    Localizable.strings.
+
+    Examples:
+        Library, title      -> library.title
+        Reader, pageOf      -> reader.pageOf
+        AI, quotaUsed       -> ai.quotaUsed
+        Common, ok          -> common.ok
+
+    Returns None if the namespace is not recognised.
+    """
+    prefix = L10N_NAMESPACE_MAP.get(namespace)
+    if prefix is None:
+        return None
+    return f"{prefix}.{key}"
+
+
+def load_strings_keys(path: Path) -> set[str]:
+    """
+    Parse a Localizable.strings file and return the set of defined keys.
+    Handles both quoted-key format: "some.key" = "value";
+    """
+    if not path.exists():
+        return set()
+    text = read_text(path)
+    return set(re.findall(r'^"([^"]+)"\s*=', text, re.MULTILINE))
+
+
+def load_l10n_defined_keys(path: Path) -> set[str]:
+    """
+    Extract all NSLocalizedString key literals from L10n.swift.
+    These are the canonical keys the codebase declares.
+    """
+    if not path.exists():
+        return set()
+    text = read_text(path)
+    return set(re.findall(r'NSLocalizedString\("([^"]+)"', text))
+
+
+# ── Check 1: Unresolved L10n.* key references ──────────────────────────────
+def check_l10n_key_references(en_keys: set[str], ru_keys: set[str]) -> None:
+    """
+    Scan all Swift files for L10n.<Namespace>.<key> references.
+    For each reference, derive the dot-notation key and verify it exists
+    in both EN and RU .strings files.
+
+    Parameterised function calls like L10n.Reader.pageOf(current:total:)
+    are handled: the regex captures 'pageOf' from 'L10n.Reader.pageOf',
+    which maps to 'reader.pageOf' — the function call suffix is ignored.
+    """
+    unresolved: dict[str, list[str]] = {}
+
     for f in swift_files():
-        text = f.read_text(encoding="utf-8", errors="ignore")
-        for m in type_pattern.finditer(text):
+        if f.name == "L10n.swift":
+            continue
+        text = read_text(f)
+        for m in _L10N_REF_RE.finditer(text):
+            namespace = m.group(1)
+            key_name = m.group(2)
+            dot_key = camel_to_dot(namespace, key_name)
+            if dot_key is None:
+                warn(
+                    f"Unknown L10n namespace '{namespace}' referenced in "
+                    f"{f.name} — add to L10N_NAMESPACE_MAP if intentional"
+                )
+                continue
+            missing_in: list[str] = []
+            if dot_key not in en_keys:
+                missing_in.append("en.lproj/Localizable.strings")
+            if dot_key not in ru_keys:
+                missing_in.append("ru.lproj/Localizable.strings")
+            if missing_in:
+                tag = f"{f.name}: L10n.{namespace}.{key_name} → \"{dot_key}\""
+                unresolved.setdefault(tag, []).extend(missing_in)
+
+    for tag, locations in sorted(unresolved.items()):
+        unique_locations = sorted(set(locations))
+        error(f"Unresolved L10n key — {tag} missing in: {', '.join(unique_locations)}")
+
+
+# ── Check 2: L10n.swift keys present in both .strings files ────────────────
+def check_l10n_swift_keys_in_strings(en_keys: set[str], ru_keys: set[str]) -> None:
+    """
+    Every key declared in L10n.swift via NSLocalizedString must exist in
+    both .strings files. This catches keys defined in L10n.swift but
+    accidentally omitted from a .strings file.
+    """
+    if not L10N_SWIFT.exists():
+        warn("L10n.swift not found — skipping L10n key completeness check")
+        return
+
+    declared = load_l10n_defined_keys(L10N_SWIFT)
+
+    for key in sorted(declared):
+        if key not in en_keys:
+            error(f"L10n.swift declares \"{key}\" but it is missing from en.lproj/Localizable.strings")
+        if key not in ru_keys:
+            error(f"L10n.swift declares \"{key}\" but it is missing from ru.lproj/Localizable.strings")
+
+
+# ── Check 3: EN and RU key parity ──────────────────────────────────────────
+def check_strings_parity(en_keys: set[str], ru_keys: set[str]) -> None:
+    """
+    Both .strings files must contain exactly the same set of keys.
+    A key present in EN but absent from RU (or vice versa) is an error
+    because it will cause silent fallback behaviour at runtime.
+    """
+    for key in sorted(en_keys - ru_keys):
+        error(f"Key \"{key}\" present in en.lproj but missing from ru.lproj/Localizable.strings")
+    for key in sorted(ru_keys - en_keys):
+        error(f"Key \"{key}\" present in ru.lproj but missing from en.lproj/Localizable.strings")
+
+
+# ── Check 4: Hardcoded UI strings (non-blocking warnings) ──────────────────
+
+_SKIP_LINE_PATTERNS: list[re.Pattern[str]] = [
+    re.compile(r'^\s*//'),
+    re.compile(r'NSLocalizedString'),
+    re.compile(r'\bL10n\.'),
+    re.compile(r'fatalError\('),
+    re.compile(r'precondition\('),
+    re.compile(r'assert\('),
+    re.compile(r'\bprint\('),
+    re.compile(r'\bLogger\b'),
+    re.compile(r'OSLog'),
+    re.compile(r'\.accessibilityLabel\('),
+    re.compile(r'\.accessibilityHint\('),
+    re.compile(r'\.accessibilityValue\('),
+    re.compile(r'case\s+\w+\s*=\s*"'),
+    re.compile(r'#\w+\s*\('),
+    re.compile(r'identifier\s*=\s*"'),
+    re.compile(r'bundleIdentifier'),
+    re.compile(r'providerID\s*=\s*"'),
+    re.compile(r'kSecAttr'),
+    re.compile(r'CKRecord\.RecordType'),
+    re.compile(r'\.userInfo\['),
+    re.compile(r'Notification\.Name\('),
+    re.compile(r'UTType\('),
+    re.compile(r'\.scheme\s*==\s*"'),
+    re.compile(r'URL\(string:\s*"'),
+    re.compile(r'URLComponents'),
+    re.compile(r'com\.apple\.'),
+    re.compile(r'com\.vreader\.'),
+    re.compile(r'vreader://'),
+    re.compile(r'#if\s+DEBUG'),
+    re.compile(r'#Preview'),
+]
+
+_SKIP_FILE_PATTERNS: list[str] = [
+    "SampleData",
+    "Preview",
+    "L10n.swift",
+    "check_refs.py",
+]
+
+_HARDCODED_UI_RE = re.compile(
+    r'(?:'
+    r'(?<!\w)Text\s*\(\s*"([^"]{2,})"'
+    r'|\.navigationTitle\s*\(\s*"([^"]{2,})"'
+    r'|\.placeholder\s*\(\s*"([^"]{2,})"'
+    r'|Label\s*\(\s*"([^"]{2,})"'
+    r'|Button\s*\(\s*"([^"]{2,})"'
+    r'|\.help\s*\(\s*"([^"]{2,})"'
+    r'|EmptyView\s*\(\s*"([^"]{2,})"'
+    r')'
+)
+
+def check_hardcoded_strings() -> None:
+    """
+    Scan SwiftUI view files for hardcoded string literals passed to
+    UI-constructing calls. Emits non-blocking warnings only.
+    """
+    for f in swift_files():
+        if any(skip in f.name for skip in _SKIP_FILE_PATTERNS):
+            continue
+        text = read_text(f)
+        lines = text.splitlines()
+        for line_no, line in enumerate(lines, start=1):
+            if any(p.search(line) for p in _SKIP_LINE_PATTERNS):
+                continue
+            m = _HARDCODED_UI_RE.search(line)
+            if m:
+                literal = next(g for g in m.groups() if g is not None)
+                warn(
+                    f"Possible hardcoded UI string in {f.name}:{line_no} "
+                    f"— \"{literal[:50]}\" — use L10n.*"
+                )
+
+
+# ── Check 5: Duplicate type definitions ────────────────────────────────────
+_TYPE_DEF_RE = re.compile(
+    r'^\s*(?:(?:public|internal|private|fileprivate|open)\s+)*'
+    r'(?:final\s+)?(?:class|struct|enum|protocol|actor)\s+(\w+)',
+    re.MULTILINE,
+)
+_ALLOWED_DUPLICATES: frozenset[str] = frozenset({
+    "Preview", "Body", "ContentView", "Coordinator", "ViewModel", "Provider",
+})
+
+def check_duplicate_types() -> None:
+    seen: dict[str, str] = {}
+    for f in swift_files():
+        text = read_text(f)
+        for m in _TYPE_DEF_RE.finditer(text):
             name = m.group(1)
-            if name in ("Preview", "Body", "ContentView", "Coordinator", "ViewModel", "Provider"):
+            if name in _ALLOWED_DUPLICATES:
                 continue
             if name in seen:
                 error(f"Duplicate type '{name}' in {f.name} and {seen[name]}")
             else:
                 seen[name] = f.name
 
-# ── 2. Force-unwrap UTType ──────────────────────────────────────────────────
-def check_uttype_force_unwrap():
+
+# ── Check 6: Force-unwrap UTType ────────────────────────────────────────────
+def check_uttype_force_unwrap() -> None:
     pattern = re.compile(r'UTType\([^)]+\)!')
     for f in swift_files():
-        text = f.read_text(encoding="utf-8", errors="ignore")
-        if pattern.search(text):
+        if pattern.search(read_text(f)):
             error(f"Force-unwrap UTType in {f.name} — use optional binding")
 
-# ── 3. Hardcoded user-facing strings ───────────────────────────────────────
-def check_hardcoded_strings():
-    skip_patterns = [
-        re.compile(r'//.*"'),           # comments
-        re.compile(r'#\w+\s*\('),       # macros
-        re.compile(r'fatalError\('),
-        re.compile(r'precondition\('),
-        re.compile(r'assert\('),
-        re.compile(r'print\('),
-        re.compile(r'Logger\('),
-        re.compile(r'OSLog'),
-        re.compile(r'\.accessibilityLabel\('),
-        re.compile(r'case\s+\w+\s*=\s*"'),  # enum raw values
-        re.compile(r'NSLocalizedString'),
-        re.compile(r'L10n\.'),
-    ]
-    ui_pattern = re.compile(r'(?:Text|Label|Button|navigationTitle|placeholder)\s*\(\s*"([^"]{3,})"')
-    for f in swift_files():
-        if "SampleData" in f.name or "Preview" in f.name:
-            continue
-        text = f.read_text(encoding="utf-8", errors="ignore")
-        for m in ui_pattern.finditer(text):
-            line_start = text.rfind('\n', 0, m.start()) + 1
-            line = text[line_start:text.find('\n', m.start())]
-            if any(p.search(line) for p in skip_patterns):
-                continue
-            warn(f"Possible hardcoded string in {f.name}: \"{m.group(1)[:40]}\"")
 
-# ── 4. coverData in SwiftData models ───────────────────────────────────────
-def check_cover_data():
+# ── Check 7: coverData in SwiftData models ──────────────────────────────────
+def check_cover_data() -> None:
     pattern = re.compile(r'var\s+coverData\s*:\s*Data')
     for f in swift_files():
-        text = f.read_text(encoding="utf-8", errors="ignore")
-        if pattern.search(text):
+        if pattern.search(read_text(f)):
             error(f"coverData: Data found in {f.name} — use coverPath: String only")
 
-# ── 5. iOS 17+ API compatibility ───────────────────────────────────────────
-def check_ios_compatibility():
-    deprecated = [
-        ("UIApplication.shared.keyWindow", "use UIWindowScene"),
-        ("UIWebView", "use WKWebView"),
-        ("presentationMode", "use dismiss() environment"),
-    ]
-    for f in swift_files():
-        text = f.read_text(encoding="utf-8", errors="ignore")
-        for api, hint in deprecated:
-            if api in text:
-                warn(f"Deprecated API '{api}' in {f.name} — {hint}")
 
-# ── 6. WKWebView for OAuth ──────────────────────────────────────────────────
-def check_wkwebview_oauth():
-    pattern = re.compile(r'WKWebView')
-    oauth_files = [f for f in swift_files() if any(
-        kw in f.read_text(encoding="utf-8", errors="ignore")
-        for kw in ["OAuth", "oauth", "authorization_code", "redirect_uri"]
-    )]
-    for f in oauth_files:
-        text = f.read_text(encoding="utf-8", errors="ignore")
-        if pattern.search(text):
+# ── Check 8: WKWebView for OAuth ────────────────────────────────────────────
+def check_wkwebview_oauth() -> None:
+    oauth_keywords = {"OAuth", "oauth", "authorization_code", "redirect_uri"}
+    wk_pattern = re.compile(r'WKWebView')
+    for f in swift_files():
+        text = read_text(f)
+        if any(kw in text for kw in oauth_keywords) and wk_pattern.search(text):
             error(f"WKWebView used for OAuth in {f.name} — use ASWebAuthenticationSession")
 
-# ── 7. isPremium in CloudKit sync ───────────────────────────────────────────
-def check_ispremium_cloudkit():
+
+# ── Check 9: isPremium in CloudKit sync ─────────────────────────────────────
+def check_ispremium_cloudkit() -> None:
     pattern = re.compile(r'isPremium')
     for f in swift_files():
-        text = f.read_text(encoding="utf-8", errors="ignore")
+        text = read_text(f)
         if "CloudKit" in text and "CKRecord" in text and pattern.search(text):
-            error(f"isPremium may be synced via CloudKit in {f.name} — forbidden by invariant")
+            error(
+                f"isPremium may be synced via CloudKit in {f.name} "
+                f"— forbidden by invariant"
+            )
 
-# ── 8. Swift file structure ─────────────────────────────────────────────────
-def check_swift_syntax():
+
+# ── Check 10: Unbalanced braces ─────────────────────────────────────────────
+def check_swift_syntax() -> None:
     for f in swift_files():
-        text = f.read_text(encoding="utf-8", errors="ignore")
+        text = read_text(f)
         opens = text.count('{')
         closes = text.count('}')
         if opens != closes:
             error(f"Unbalanced braces in {f.name} ({opens} open, {closes} close)")
 
-# ── 9. Entitlements check ───────────────────────────────────────────────────
-def check_entitlements():
+
+# ── Check 11: iOS deprecated API ────────────────────────────────────────────
+_DEPRECATED_APIS: list[tuple[str, str]] = [
+    ("UIApplication.shared.keyWindow", "use UIWindowScene"),
+    ("UIWebView", "use WKWebView"),
+    ("presentationMode", "use dismiss() environment"),
+]
+
+def check_ios_compatibility() -> None:
+    for f in swift_files():
+        text = read_text(f)
+        for api, hint in _DEPRECATED_APIS:
+            if api in text:
+                warn(f"Deprecated API '{api}' in {f.name} — {hint}")
+
+
+# ── Check 12: Entitlements ───────────────────────────────────────────────────
+def check_entitlements() -> None:
     ent = SWIFT_DIR / "VReader.entitlements"
     if not ent.exists():
         error("VReader.entitlements not found")
         return
-    text = ent.read_text()
+    text = read_text(ent)
     required = [
         "ubiquity-kvs-identifier",
         "icloud-services",
@@ -142,38 +361,74 @@ def check_entitlements():
         if key not in text:
             error(f"Missing entitlement: {key}")
 
-# ── Run all checks ──────────────────────────────────────────────────────────
-print("🔍 VReader check_refs.py")
-print(f"   Scanning {len(swift_files())} Swift files in {SWIFT_DIR}")
-print()
 
-check_duplicate_types()
-check_uttype_force_unwrap()
-check_cover_data()
-check_ios_compatibility()
-check_wkwebview_oauth()
-check_ispremium_cloudkit()
-check_swift_syntax()
-check_entitlements()
-check_hardcoded_strings()
+# ── Check 13: dot-notation keys in .strings files ───────────────────────────
+def check_dot_notation_keys(en_keys: set[str], ru_keys: set[str]) -> None:
+    """
+    All keys in .strings files must use dot-notation (e.g. library.title).
+    Flat snake_case keys (e.g. library_title) are forbidden per NFR-03.
+    """
+    flat_re = re.compile(r'^[a-z]+_[a-z_]+$')
+    for key in sorted(en_keys | ru_keys):
+        if flat_re.match(key):
+            error(
+                f"Flat snake_case key \"{key}\" found in .strings files "
+                f"— must use dot-notation (e.g. library.title)"
+            )
 
-if errors:
-    print("❌ ERRORS (must fix before merge):")
-    for e in errors:
-        print(e)
+
+# ── Main ─────────────────────────────────────────────────────────────────────
+def main() -> int:
+    print("🔍 VReader check_refs.py")
+    all_swift = swift_files()
+    print(f"   Scanning {len(all_swift)} Swift files in {SWIFT_DIR}")
+
+    if not EN_STRINGS.exists():
+        error(f"en.lproj/Localizable.strings not found at {EN_STRINGS}")
+    if not RU_STRINGS.exists():
+        error(f"ru.lproj/Localizable.strings not found at {RU_STRINGS}")
+
+    en_keys = load_strings_keys(EN_STRINGS)
+    ru_keys = load_strings_keys(RU_STRINGS)
+
+    print(f"   EN keys: {len(en_keys)}  |  RU keys: {len(ru_keys)}")
     print()
 
-if warnings:
-    print("⚠️  WARNINGS (review recommended):")
-    for w in warnings:
-        print(w)
-    print()
+    check_strings_parity(en_keys, ru_keys)
+    check_dot_notation_keys(en_keys, ru_keys)
+    check_l10n_swift_keys_in_strings(en_keys, ru_keys)
+    check_l10n_key_references(en_keys, ru_keys)
+    check_hardcoded_strings()
+    check_duplicate_types()
+    check_uttype_force_unwrap()
+    check_cover_data()
+    check_ios_compatibility()
+    check_wkwebview_oauth()
+    check_ispremium_cloudkit()
+    check_swift_syntax()
+    check_entitlements()
 
-if not errors and not warnings:
-    print("✅ All checks passed")
-elif not errors:
-    print("✅ No errors — warnings are informational")
-else:
-    print(f"❌ {len(errors)} error(s) found — merge blocked")
+    if errors:
+        print("❌ ERRORS (must fix before merge):")
+        for e in errors:
+            print(e)
+        print()
 
-sys.exit(1 if errors else 0)
+    if warnings:
+        print("⚠️  WARNINGS (review recommended):")
+        for w in warnings:
+            print(w)
+        print()
+
+    if not errors and not warnings:
+        print("✅ All checks passed")
+    elif not errors:
+        print("✅ No errors — warnings are informational only")
+    else:
+        print(f"❌ {len(errors)} error(s) found — merge blocked")
+
+    return 1 if errors else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,85 +1,121 @@
 // Localizable.strings (English)
 
-// Tabs
-"tab.library"   = "Library";
-"tab.reading"   = "Reading";
-"tab.catalogs"  = "Catalogs";
-"tab.settings"  = "Settings";
-"tab.home"      = "Home";
-
 // Library
-"library.title"         = "Library";
-"library.empty.title"   = "Library is Empty";
-"library.empty.message" = "Add books from your device\nor connect cloud storage";
-"library.add_book"      = "Add Book";
-"library.delete"        = "Delete";
-"library.from_device"   = "From Device / iCloud Drive";
-"library.from_account"  = "From %@";
+"library.title" = "Library";
+"library.searchPlaceholder" = "Search books";
+"library.emptyState" = "No books yet. Add your first book.";
+"library.addBook" = "Add Book";
+"library.sortBy" = "Sort By";
+"library.filterBy" = "Filter By";
+"library.collections" = "Collections";
+"library.favorites" = "Favorites";
+"library.allBooks" = "All Books";
+"library.recentlyRead" = "Recently Read";
 
 // Reader
-"reader.contents"           = "Contents";
-"reader.appearance"         = "Appearance";
-"reader.theme"              = "Theme";
-"reader.font_size"          = "Font Size";
-"reader.line_spacing"       = "Line Spacing";
-"reader.scroll_mode"        = "Scroll Mode";
-"reader.language_script"    = "Language / Direction";
-"reader.vertical_text"      = "Vertical Text";
-"reader.vertical_text.hint" = "For Chinese, Japanese";
-"reader.rtl_hint"           = "Arabic RTL is detected automatically";
-"reader.theme.light"        = "Light";
-"reader.theme.sepia"        = "Sepia";
-"reader.theme.dark"         = "Dark";
-"reader.scroll.page_h"      = "Pages →";
-"reader.scroll.vertical"    = "Scroll ↕";
-"reader.scroll.horizontal"  = "Scroll →";
-"reader.spacing.narrow"     = "Narrow";
-"reader.spacing.medium"     = "Medium";
-"reader.spacing.wide"       = "Wide";
-"reader.read"               = "Read";
-"reader.continue"           = "Continue Reading";
-"reader.not_downloaded"     = "Not Downloaded";
-"reader.download"           = "Download";
-"reader.finished"           = "Finished";
-"reader.beginning"          = "Beginning";
-"reader.end"                = "End";
-"reader.chapters"           = "Chapters";
-"reader.chapter"            = "Chapter";
-"reader.in_progress"        = "In Progress";
+"reader.continueReading" = "Continue Reading";
+"reader.chapter" = "Chapter";
+"reader.page" = "Page";
+"reader.of" = "of";
+"reader.translate" = "Translate";
+"reader.tts" = "Listen";
+"reader.notes" = "Notes";
+"reader.bookmarks" = "Bookmarks";
+"reader.toc" = "Table of Contents";
+"reader.settings" = "Settings";
+"reader.share" = "Share";
+"reader.close" = "Close";
+"reader.nextChapter" = "Next Chapter";
+"reader.prevChapter" = "Previous Chapter";
+"reader.pageOf" = "%d of %d";
 
 // Settings
-"settings.title"         = "Settings";
-"settings.appearance"    = "Appearance";
-"settings.font"          = "Font";
-"settings.font_picker"   = "Choose Font";
-"settings.font_size"     = "Font Size";
-"settings.storage"       = "Storage";
-"settings.cloud"         = "Add Storage";
-"settings.sync"          = "Sync";
-"settings.sync.detail"   = "Reading progress and bookmarks sync via iCloud";
-"settings.ai"            = "Artificial Intelligence";
-"settings.ai.soon"       = "AI features (coming soon)";
-"settings.app"           = "App";
-"settings.version"       = "Version";
-"settings.feedback"      = "Contact Support";
-"settings.review"        = "Leave a Review";
-"settings.dev"           = "Development";
+"settings.title" = "Settings";
+"settings.theme" = "Theme";
+"settings.font" = "Font";
+"settings.fontSize" = "Font Size";
+"settings.lineSpacing" = "Line Spacing";
+"settings.language" = "Language";
+"settings.cloud" = "Cloud Storage";
+"settings.premium" = "Premium";
+"settings.diagnostics" = "Diagnostics";
+"settings.about" = "About";
+"settings.version" = "Version";
+"settings.resetSettings" = "Reset Settings";
 
-// Cloud / Catalogs
-"cloud.free"       = "Free";
-"cloud.stores"     = "Stores";
-"cloud.available"  = "Available";
-"cloud.connected"  = "Connected";
-"cloud.connection" = "Connection";
-"cloud.service"    = "Service";
-"cloud.add"        = "Add";
+// Cloud
+"cloud.title" = "Cloud Storage";
+"cloud.connect" = "Connect";
+"cloud.disconnect" = "Disconnect";
+"cloud.sync" = "Sync";
+"cloud.lastSync" = "Last Sync";
+"cloud.providers" = "Providers";
+"cloud.icloud" = "iCloud Drive";
+"cloud.webdav" = "WebDAV";
+"cloud.yandex" = "Yandex Disk";
+"cloud.nextcloud" = "Nextcloud";
+"cloud.mailru" = "Mail.ru Cloud";
+"cloud.google" = "Google Drive";
+"cloud.dropbox" = "Dropbox";
+"cloud.onedrive" = "OneDrive";
+"cloud.smb" = "SMB / NAS";
+"cloud.downloading" = "Downloading";
+"cloud.downloaded" = "Downloaded";
+"cloud.cloudOnly" = "Cloud Only";
+"cloud.previewed" = "Preview";
+
+// AI
+"ai.translate" = "Translate";
+"ai.summary" = "Summary";
+"ai.xray" = "X-Ray";
+"ai.dictionary" = "Dictionary";
+"ai.tts" = "Text to Speech";
+"ai.quota" = "Quota";
+"ai.quotaUsed" = "Quota used: %d";
+"ai.offline" = "AI features require internet connection";
+"ai.premiumRequired" = "Premium required for this AI feature";
+"ai.translating" = "Translating...";
+"ai.generating" = "Generating...";
+
+// Premium
+"premium.title" = "VReader Premium";
+"premium.subtitle" = "Unlock all features";
+"premium.monthly" = "Monthly";
+"premium.lifetime" = "Lifetime";
+"premium.restore" = "Restore Purchases";
+"premium.features" = "Premium Features";
+"premium.unlockThemes" = "Unlock all themes";
+"premium.unlockCloud" = "Unlock all cloud providers";
+"premium.unlockAI" = "Unlock AI features";
+"premium.unlockTTS" = "Unlock Gemini TTS";
 
 // Common
-"common.cancel"  = "Cancel";
-"common.done"    = "Done";
-"common.back"    = "Back";
-"common.error"   = "Error";
-"common.reading" = "Reading";
+"common.ok" = "OK";
+"common.cancel" = "Cancel";
+"common.delete" = "Delete";
+"common.edit" = "Edit";
+"common.save" = "Save";
+"common.close" = "Close";
+"common.retry" = "Retry";
+"common.loading" = "Loading...";
+"common.error" = "Error";
+"common.success" = "Success";
+"common.warning" = "Warning";
+"common.unknown" = "Unknown";
 
-// AppTheme
-"app_theme.premium_required" = "This theme is available in Premium only";
+// Errors
+"errors.fileNotFound" = "File not found";
+"errors.networkOffline" = "No internet connection";
+"errors.cloudProviderError" = "Cloud provider error";
+"errors.aiServiceError" = "AI service error";
+"errors.premiumRequired" = "Premium subscription required";
+"errors.syncFailed" = "Sync failed";
+"errors.parsingFailed" = "Failed to parse file";
+
+// Onboarding
+"onboarding.title" = "Welcome to VReader";
+"onboarding.subtitle" = "Your intelligent personal book cloud";
+"onboarding.addFirstBook" = "Add your first book";
+"onboarding.connectCloud" = "Connect cloud storage";
+"onboarding.skip" = "Skip";
+"onboarding.getStarted" = "Get Started";

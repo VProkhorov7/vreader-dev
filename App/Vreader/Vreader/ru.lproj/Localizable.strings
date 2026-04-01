@@ -1,85 +1,121 @@
-// Localizable.strings (Russian — основной язык приложения)
-
-// Tabs
-"tab.library"   = "Библиотека";
-"tab.reading"   = "Читаю";
-"tab.catalogs"  = "Каталоги";
-"tab.settings"  = "Настройки";
-"tab.home"      = "Дом";
+// Localizable.strings (Russian)
 
 // Library
-"library.title"         = "Библиотека";
-"library.empty.title"   = "Библиотека пуста";
-"library.empty.message" = "Добавьте книги с устройства\nили подключите облачное хранилище";
-"library.add_book"      = "Добавить книгу";
-"library.delete"        = "Удалить";
-"library.from_device"   = "С устройства / iCloud Drive";
-"library.from_account"  = "Из %@";
+"library.title" = "Библиотека";
+"library.searchPlaceholder" = "Поиск книг";
+"library.emptyState" = "Книг пока нет. Добавьте первую книгу.";
+"library.addBook" = "Добавить книгу";
+"library.sortBy" = "Сортировка";
+"library.filterBy" = "Фильтр";
+"library.collections" = "Коллекции";
+"library.favorites" = "Избранное";
+"library.allBooks" = "Все книги";
+"library.recentlyRead" = "Недавно читал";
 
 // Reader
-"reader.contents"          = "Содержание";
-"reader.appearance"        = "Оформление";
-"reader.theme"             = "Тема";
-"reader.font_size"         = "Размер текста";
-"reader.line_spacing"      = "Межстрочный интервал";
-"reader.scroll_mode"       = "Режим листания";
-"reader.language_script"   = "Язык / направление";
-"reader.vertical_text"     = "Вертикальный текст";
-"reader.vertical_text.hint" = "Для китайского, японского";
-"reader.rtl_hint"          = "RTL для арабского определяется автоматически";
-"reader.theme.light"       = "Светлая";
-"reader.theme.sepia"       = "Сепия";
-"reader.theme.dark"        = "Тёмная";
-"reader.scroll.page_h"     = "Страницами →";
-"reader.scroll.vertical"   = "Полотно ↕";
-"reader.scroll.horizontal" = "Полотно →";
-"reader.spacing.narrow"    = "Узкий";
-"reader.spacing.medium"    = "Средний";
-"reader.spacing.wide"      = "Широкий";
-"reader.read"              = "Читать";
-"reader.continue"          = "Продолжить чтение";
-"reader.not_downloaded"    = "Книга не скачана";
-"reader.download"          = "Скачать";
-"reader.finished"          = "Прочитано";
-"reader.beginning"         = "Начало";
-"reader.end"               = "Конец";
-"reader.chapters"          = "Главы";
-"reader.chapter"           = "Глава";
-"reader.in_progress"       = "В процессе";
+"reader.continueReading" = "Продолжить чтение";
+"reader.chapter" = "Глава";
+"reader.page" = "Страница";
+"reader.of" = "из";
+"reader.translate" = "Перевести";
+"reader.tts" = "Слушать";
+"reader.notes" = "Заметки";
+"reader.bookmarks" = "Закладки";
+"reader.toc" = "Содержание";
+"reader.settings" = "Настройки";
+"reader.share" = "Поделиться";
+"reader.close" = "Закрыть";
+"reader.nextChapter" = "Следующая глава";
+"reader.prevChapter" = "Предыдущая глава";
+"reader.pageOf" = "%d из %d";
 
 // Settings
-"settings.title"         = "Настройки";
-"settings.appearance"    = "Оформление";
-"settings.font"          = "Шрифт";
-"settings.font_picker"   = "Выбор шрифта";
-"settings.font_size"     = "Размер шрифта";
-"settings.storage"       = "Хранилища";
-"settings.cloud"         = "Добавить хранилище";
-"settings.sync"          = "Синхронизация";
-"settings.sync.detail"   = "Прогресс и закладки синхронизируются через iCloud";
-"settings.ai"            = "Искусственный интеллект";
-"settings.ai.soon"       = "ИИ-функции (скоро)";
-"settings.app"           = "Приложение";
-"settings.version"       = "Версия";
-"settings.feedback"      = "Написать в поддержку";
-"settings.review"        = "Оставить отзыв";
-"settings.dev"           = "Разработка";
+"settings.title" = "Настройки";
+"settings.theme" = "Тема";
+"settings.font" = "Шрифт";
+"settings.fontSize" = "Размер шрифта";
+"settings.lineSpacing" = "Межстрочный интервал";
+"settings.language" = "Язык";
+"settings.cloud" = "Облачное хранилище";
+"settings.premium" = "Премиум";
+"settings.diagnostics" = "Диагностика";
+"settings.about" = "О приложении";
+"settings.version" = "Версия";
+"settings.resetSettings" = "Сбросить настройки";
 
-// Cloud / Catalogs
-"cloud.free"       = "Бесплатные";
-"cloud.stores"     = "Магазины";
-"cloud.available"  = "Доступные";
-"cloud.connected"  = "Подключённые";
-"cloud.connection" = "Подключение";
-"cloud.service"    = "Сервис";
-"cloud.add"        = "Добавить";
+// Cloud
+"cloud.title" = "Облачное хранилище";
+"cloud.connect" = "Подключить";
+"cloud.disconnect" = "Отключить";
+"cloud.sync" = "Синхронизация";
+"cloud.lastSync" = "Последняя синхронизация";
+"cloud.providers" = "Провайдеры";
+"cloud.icloud" = "iCloud Drive";
+"cloud.webdav" = "WebDAV";
+"cloud.yandex" = "Яндекс Диск";
+"cloud.nextcloud" = "Nextcloud";
+"cloud.mailru" = "Облако Mail.ru";
+"cloud.google" = "Google Диск";
+"cloud.dropbox" = "Dropbox";
+"cloud.onedrive" = "OneDrive";
+"cloud.smb" = "SMB / NAS";
+"cloud.downloading" = "Загрузка";
+"cloud.downloaded" = "Загружено";
+"cloud.cloudOnly" = "Только в облаке";
+"cloud.previewed" = "Предпросмотр";
+
+// AI
+"ai.translate" = "Перевести";
+"ai.summary" = "Краткое содержание";
+"ai.xray" = "X-Ray";
+"ai.dictionary" = "Словарь";
+"ai.tts" = "Озвучить";
+"ai.quota" = "Квота";
+"ai.quotaUsed" = "Использовано квоты: %d";
+"ai.offline" = "ИИ-функции требуют подключения к интернету";
+"ai.premiumRequired" = "Для этой ИИ-функции требуется Премиум";
+"ai.translating" = "Перевожу...";
+"ai.generating" = "Генерирую...";
+
+// Premium
+"premium.title" = "VReader Премиум";
+"premium.subtitle" = "Разблокировать все функции";
+"premium.monthly" = "Ежемесячно";
+"premium.lifetime" = "Навсегда";
+"premium.restore" = "Восстановить покупки";
+"premium.features" = "Функции Премиум";
+"premium.unlockThemes" = "Все темы оформления";
+"premium.unlockCloud" = "Все облачные провайдеры";
+"premium.unlockAI" = "ИИ-функции";
+"premium.unlockTTS" = "Озвучка Gemini TTS";
 
 // Common
-"common.cancel"  = "Отмена";
-"common.done"    = "Готово";
-"common.back"    = "Назад";
-"common.error"   = "Ошибка";
-"common.reading" = "Чтение";
+"common.ok" = "ОК";
+"common.cancel" = "Отмена";
+"common.delete" = "Удалить";
+"common.edit" = "Редактировать";
+"common.save" = "Сохранить";
+"common.close" = "Закрыть";
+"common.retry" = "Повторить";
+"common.loading" = "Загрузка...";
+"common.error" = "Ошибка";
+"common.success" = "Успешно";
+"common.warning" = "Предупреждение";
+"common.unknown" = "Неизвестно";
 
-// AppTheme
-"app_theme.premium_required" = "Эта тема доступна только в Premium-версии";
+// Errors
+"errors.fileNotFound" = "Файл не найден";
+"errors.networkOffline" = "Нет подключения к интернету";
+"errors.cloudProviderError" = "Ошибка облачного провайдера";
+"errors.aiServiceError" = "Ошибка ИИ-сервиса";
+"errors.premiumRequired" = "Требуется подписка Премиум";
+"errors.syncFailed" = "Синхронизация не удалась";
+"errors.parsingFailed" = "Не удалось разобрать файл";
+
+// Onboarding
+"onboarding.title" = "Добро пожаловать в VReader";
+"onboarding.subtitle" = "Ваше интеллектуальное личное книжное облако";
+"onboarding.addFirstBook" = "Добавить первую книгу";
+"onboarding.connectCloud" = "Подключить облачное хранилище";
+"onboarding.skip" = "Пропустить";
+"onboarding.getStarted" = "Начать";
