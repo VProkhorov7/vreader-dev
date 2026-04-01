@@ -1,0 +1,8 @@
+- command: xcodebuild build -project App/Vreader/Vreader.xcodeproj -scheme Vreader
+    -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO 2>&1
+    | tail -20
+  name: Build App target (confirms DiagnosticsService compiles with AppError)
+- command: xcodebuild test -project App/Vreader/Vreader.xcodeproj -scheme Vreader
+    -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:VreaderTests/DiagnosticsServiceTests
+    CODE_SIGNING_ALLOWED=NO 2>&1 | tail -40
+  name: Run DiagnosticsService unit tests

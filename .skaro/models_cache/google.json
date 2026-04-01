@@ -1,0 +1,305 @@
+{
+  "cached_at": "2026-04-01T14:05:42.897789+00:00",
+  "models": [
+    {
+      "id": "models/gemini-2.5-flash",
+      "name": "models/gemini-2.5-flash",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.5-pro",
+      "name": "models/gemini-2.5-pro",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.0-flash",
+      "name": "models/gemini-2.0-flash",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.0-flash-001",
+      "name": "models/gemini-2.0-flash-001",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.0-flash-lite-001",
+      "name": "models/gemini-2.0-flash-lite-001",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.0-flash-lite",
+      "name": "models/gemini-2.0-flash-lite",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.5-flash-preview-tts",
+      "name": "models/gemini-2.5-flash-preview-tts",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.5-pro-preview-tts",
+      "name": "models/gemini-2.5-pro-preview-tts",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemma-3-1b-it",
+      "name": "models/gemma-3-1b-it",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemma-3-4b-it",
+      "name": "models/gemma-3-4b-it",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemma-3-12b-it",
+      "name": "models/gemma-3-12b-it",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemma-3-27b-it",
+      "name": "models/gemma-3-27b-it",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemma-3n-e4b-it",
+      "name": "models/gemma-3n-e4b-it",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemma-3n-e2b-it",
+      "name": "models/gemma-3n-e2b-it",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-flash-latest",
+      "name": "models/gemini-flash-latest",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-flash-lite-latest",
+      "name": "models/gemini-flash-lite-latest",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-pro-latest",
+      "name": "models/gemini-pro-latest",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.5-flash-lite",
+      "name": "models/gemini-2.5-flash-lite",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.5-flash-image",
+      "name": "models/gemini-2.5-flash-image",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.5-flash-lite-preview-09-2025",
+      "name": "models/gemini-2.5-flash-lite-preview-09-2025",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-3-pro-preview",
+      "name": "models/gemini-3-pro-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-3-flash-preview",
+      "name": "models/gemini-3-flash-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-3.1-pro-preview",
+      "name": "models/gemini-3.1-pro-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-3.1-pro-preview-customtools",
+      "name": "models/gemini-3.1-pro-preview-customtools",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-3.1-flash-lite-preview",
+      "name": "models/gemini-3.1-flash-lite-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-3-pro-image-preview",
+      "name": "models/gemini-3-pro-image-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/nano-banana-pro-preview",
+      "name": "models/nano-banana-pro-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-3.1-flash-image-preview",
+      "name": "models/gemini-3.1-flash-image-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/lyria-3-clip-preview",
+      "name": "models/lyria-3-clip-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/lyria-3-pro-preview",
+      "name": "models/lyria-3-pro-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-robotics-er-1.5-preview",
+      "name": "models/gemini-robotics-er-1.5-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.5-computer-use-preview-10-2025",
+      "name": "models/gemini-2.5-computer-use-preview-10-2025",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/deep-research-pro-preview-12-2025",
+      "name": "models/deep-research-pro-preview-12-2025",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-embedding-001",
+      "name": "models/gemini-embedding-001",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-embedding-2-preview",
+      "name": "models/gemini-embedding-2-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/aqa",
+      "name": "models/aqa",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/imagen-4.0-generate-001",
+      "name": "models/imagen-4.0-generate-001",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/imagen-4.0-ultra-generate-001",
+      "name": "models/imagen-4.0-ultra-generate-001",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/imagen-4.0-fast-generate-001",
+      "name": "models/imagen-4.0-fast-generate-001",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/veo-2.0-generate-001",
+      "name": "models/veo-2.0-generate-001",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/veo-3.0-generate-001",
+      "name": "models/veo-3.0-generate-001",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/veo-3.0-fast-generate-001",
+      "name": "models/veo-3.0-fast-generate-001",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/veo-3.1-generate-preview",
+      "name": "models/veo-3.1-generate-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/veo-3.1-fast-generate-preview",
+      "name": "models/veo-3.1-fast-generate-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/veo-3.1-lite-generate-preview",
+      "name": "models/veo-3.1-lite-generate-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.5-flash-native-audio-latest",
+      "name": "models/gemini-2.5-flash-native-audio-latest",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.5-flash-native-audio-preview-09-2025",
+      "name": "models/gemini-2.5-flash-native-audio-preview-09-2025",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-2.5-flash-native-audio-preview-12-2025",
+      "name": "models/gemini-2.5-flash-native-audio-preview-12-2025",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/gemini-3.1-flash-live-preview",
+      "name": "models/gemini-3.1-flash-live-preview",
+      "context_window": 128000,
+      "max_output": 32768
+    },
+    {
+      "id": "models/lyria-realtime-exp",
+      "name": "models/lyria-realtime-exp",
+      "context_window": 128000,
+      "max_output": 32768
+    }
+  ]
+}
