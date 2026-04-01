@@ -119,3 +119,14 @@
 "onboarding.connectCloud" = "Connect cloud storage";
 "onboarding.skip" = "Skip";
 "onboarding.getStarted" = "Get Started";
+
+// Network
+"network.statusOnline" = "Network is online";
+"network.statusOffline" = "Network is offline";
+"network.connectionType.wifi" = "Wi-Fi";
+"network.connectionType.cellular" = "Cellular";
+"network.connectionType.wiredEthernet" = "Wired Ethernet";
+"network.connectionType.unknown" = "Unknown Connection";
+"network.monitoringStarted" = "Network monitoring started.";
+"network.monitoringStoppedNoOp" = "Network monitoring stopped (no-op for singleton).";
+"network.offlineDebounceCancelled" = "Offline debounce cancelled, network restored.";

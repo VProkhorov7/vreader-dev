@@ -41,6 +41,7 @@ struct VReaderApp: App {
             ContentView()
                 .appTheme(themeManager.current)
                 .environmentObject(themeManager)
+                .environment(NetworkMonitor.shared) // FR-09: Register NetworkMonitor via .environment()
         }
         .modelContainer(container)
     }

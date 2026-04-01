@@ -119,3 +119,14 @@
 "onboarding.connectCloud" = "Подключить облачное хранилище";
 "onboarding.skip" = "Пропустить";
 "onboarding.getStarted" = "Начать";
+
+// Network
+"network.statusOnline" = "Сеть онлайн";
+"network.statusOffline" = "Сеть оффлайн";
+"network.connectionType.wifi" = "Wi-Fi";
+"network.connectionType.cellular" = "Сотовая связь";
+"network.connectionType.wiredEthernet" = "Проводной Ethernet";
+"network.connectionType.unknown" = "Неизвестное подключение";
+"network.monitoringStarted" = "Мониторинг сети запущен.";
+"network.monitoringStoppedNoOp" = "Мониторинг сети остановлен (для синглтона это no-op).";
+"network.offlineDebounceCancelled" = "Отложенное отключение отменено, сеть восстановлена.";

@@ -133,4 +133,17 @@ enum L10n {
         static var skip: String { NSLocalizedString("onboarding.skip", comment: "") }
         static var getStarted: String { NSLocalizedString("onboarding.getStarted", comment: "") }
     }
+
+    /// Strings related to network status and monitoring.
+    enum Network {
+        static var statusOnline: String { NSLocalizedString("network.statusOnline", comment: "") }
+        static var statusOffline: String { NSLocalizedString("network.statusOffline", comment: "") }
+        static var connectionTypeWifi: String { NSLocalizedString("network.connectionType.wifi", comment: "") }
+        static var connectionTypeCellular: String { NSLocalizedString("network.connectionType.cellular", comment: "") }
+        static var connectionTypeWiredEthernet: String { NSLocalizedString("network.connectionType.wiredEthernet", comment: "") }
+        static var connectionTypeUnknown: String { NSLocalizedString("network.connectionType.unknown", comment: "") }
+        static var monitoringStarted: String { NSLocalizedString("network.monitoringStarted", comment: "") }
+        static var monitoringStoppedNoOp: String { NSLocalizedString("network.monitoringStoppedNoOp", comment: "") }
+        static var offlineDebounceCancelled: String { NSLocalizedString("network.offlineDebounceCancelled", comment: "") }
+    }
 }
