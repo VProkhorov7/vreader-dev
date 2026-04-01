@@ -11,7 +11,7 @@ import AppKit
 struct LibraryView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Book.addedAt, order: .reverse) private var books: [Book]
-    @ObservedObject private var store = iCloudSettingsStore.shared
+    @State private var store = iCloudSettingsStore.shared
 
     @State private var showImporter      = false
     @State private var showSourcePicker  = false

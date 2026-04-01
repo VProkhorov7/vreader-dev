@@ -39,13 +39,13 @@ struct ErrorDescription {
     let suggestedAction: String?
 }
 
-protocol DiagnosticsService {
+protocol ErrorDescriptionProvider {
     func describe(_ error: ErrorCode) -> ErrorDescription
 }
 
 // MARK: - Default descriptions
 
-struct DefaultDiagnosticsService: DiagnosticsService {
+struct DefaultErrorDescriptionProvider: ErrorDescriptionProvider {
     func describe(_ error: ErrorCode) -> ErrorDescription {
         switch error {
         case .networkUnavailable:

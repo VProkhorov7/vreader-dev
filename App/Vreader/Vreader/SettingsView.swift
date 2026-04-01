@@ -2,9 +2,10 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var settings = iCloudSettingsStore.shared
+    @State private var settings = iCloudSettingsStore.shared
 
     var body: some View {
+        @Bindable var s = settings
         NavigationStack {
             List {
 
@@ -13,28 +14,28 @@ struct SettingsView: View {
                     HStack {
                         Label("Размер шрифта", systemImage: "textformat.size")
                         Spacer()
-                        Text("\(Int(settings.fontSize))pt")
+                        Text("\(Int(s.fontSize))pt")
                             .foregroundStyle(.secondary)
                     }
-                    Slider(value: $settings.fontSize, in: 12...28, step: 1)
+                    Slider(value: $s.fontSize, in: 12...28, step: 1)
                         .tint(Color.accentColor)
 
                     HStack {
                         Label("Межстрочный интервал", systemImage: "text.alignleft")
                         Spacer()
-                        Text(String(format: "%.1f", settings.lineSpacing))
+                        Text(String(format: "%.1f", s.lineSpacing))
                             .foregroundStyle(.secondary)
                     }
-                    Slider(value: $settings.lineSpacing, in: 1.0...2.5, step: 0.1)
+                    Slider(value: $s.lineSpacing, in: 1.0...2.5, step: 0.1)
                         .tint(Color.accentColor)
 
                     NavigationLink {
-                        FontPickerView(selectedFont: $settings.fontName)
+                        FontPickerView(selectedFont: $s.fontName)
                     } label: {
                         HStack {
                             Label("Шрифт", systemImage: "f.cursive")
                             Spacer()
-                            Text(settings.fontName)
+                            Text(s.fontName)
                                 .foregroundStyle(.secondary)
                         }
                     }
@@ -42,7 +43,7 @@ struct SettingsView: View {
 
                 // MARK: Тема
                 Section("Тема оформления") {
-                    Picker("Тема", selection: $settings.readerTheme) {
+                    Picker("Тема", selection: $s.readerTheme) {
                         Label("Светлая", systemImage: "sun.max").tag("light")
                         Label("Сепия",   systemImage: "leaf").tag("sepia")
                         Label("Тёмная",  systemImage: "moon.fill").tag("dark")

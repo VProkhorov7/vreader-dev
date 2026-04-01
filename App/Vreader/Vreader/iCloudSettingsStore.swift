@@ -44,7 +44,7 @@ final class iCloudSettingsStore: iCloudSettingsStoreProtocol {
 
     // Using internal properties to manage direct KVStore interaction
     // and expose @Published properties conforming to the protocol.
-    @Published var currentThemeID: String {
+    var currentThemeID: String {
         didSet {
             if isUbiquitousStoreAvailable {
                 ubiquitousStore.set(currentThemeID, forKey: Keys.currentThemeID)
@@ -53,7 +53,7 @@ final class iCloudSettingsStore: iCloudSettingsStoreProtocol {
         }
     }
 
-    @Published var defaultFontSize: Double {
+    var defaultFontSize: Double {
         didSet {
             if isUbiquitousStoreAvailable {
                 ubiquitousStore.set(defaultFontSize, forKey: Keys.defaultFontSize)
@@ -62,7 +62,7 @@ final class iCloudSettingsStore: iCloudSettingsStoreProtocol {
         }
     }
 
-    @Published var lineSpacing: Double {
+    var lineSpacing: Double {
         didSet {
             if isUbiquitousStoreAvailable {
                 ubiquitousStore.set(lineSpacing, forKey: Keys.lineSpacing)
@@ -98,8 +98,42 @@ final class iCloudSettingsStore: iCloudSettingsStoreProtocol {
 
     // MARK: - Local-only settings (via UserDefaults)
 
-    @Published var isAutoScrollEnabled: Bool {
+    var isAutoScrollEnabled: Bool {
         didSet { userDefaults.set(isAutoScrollEnabled, forKey: Keys.isAutoScrollEnabled) }
+    }
+
+    var fontSize: Double {
+        get { defaultFontSize }
+        set { defaultFontSize = newValue }
+    }
+
+    var fontName: String {
+        didSet { userDefaults.set(fontName, forKey: Keys.fontName) }
+    }
+
+    var readerTheme: String {
+        didSet {
+            if isUbiquitousStoreAvailable {
+                ubiquitousStore.set(readerTheme, forKey: Keys.readerTheme)
+                ubiquitousStore.synchronize()
+            }
+        }
+    }
+
+    var scrollMode: String {
+        didSet { userDefaults.set(scrollMode, forKey: Keys.scrollMode) }
+    }
+
+    var verticalTextMode: Bool {
+        didSet { userDefaults.set(verticalTextMode, forKey: Keys.verticalTextMode) }
+    }
+
+    var connectedAccounts: [CloudProviderAccount] {
+        didSet { saveAccounts() }
+    }
+
+    var connectedCatalogs: [OnlineCatalogEntry] {
+        didSet { saveCatalogs() }
     }
 
     // MARK: - Computed Properties for Protocol
@@ -133,6 +167,12 @@ final class iCloudSettingsStore: iCloudSettingsStoreProtocol {
 
         // Local-only settings
         self.isAutoScrollEnabled = userDefaults.bool(forKey: Keys.isAutoScrollEnabled)
+        self.fontName = userDefaults.string(forKey: Keys.fontName) ?? "Georgia"
+        self.readerTheme = ubiquitousStore.string(forKey: Keys.readerTheme) ?? userDefaults.string(forKey: Keys.readerTheme) ?? "light"
+        self.scrollMode = userDefaults.string(forKey: Keys.scrollMode) ?? "page_horizontal"
+        self.verticalTextMode = userDefaults.bool(forKey: Keys.verticalTextMode)
+        self.connectedAccounts = Self.loadAccounts(from: userDefaults)
+        self.connectedCatalogs = Self.loadCatalogs(from: userDefaults)
 
         // Listen for external changes from iCloud
         NotificationCenter.default.publisher(
@@ -152,6 +192,58 @@ final class iCloudSettingsStore: iCloudSettingsStoreProtocol {
         ubiquitousStore.set(value, forKey: Keys.isPremiumCache)
         ubiquitousStore.set(Date.now.timeIntervalSince1970, forKey: Keys.isPremiumCacheTimestamp)
         ubiquitousStore.synchronize()
+    }
+
+    // MARK: - Account & Catalog Management
+
+    func isCatalogConnected(_ catalogID: String) -> Bool {
+        connectedCatalogs.contains { $0.catalogID == catalogID }
+    }
+
+    func addCatalog(_ entry: OnlineCatalogEntry) throws {
+        connectedCatalogs.append(entry)
+    }
+
+    func addCatalog(_ entry: OnlineCatalogEntry, password: String) throws {
+        connectedCatalogs.append(entry)
+    }
+
+    func removeCatalog(_ entry: OnlineCatalogEntry) {
+        connectedCatalogs.removeAll { $0.id == entry.id }
+    }
+
+    func addAccount(_ account: CloudProviderAccount, password: String) throws {
+        connectedAccounts.append(account)
+    }
+
+    func removeAccount(_ account: CloudProviderAccount) {
+        connectedAccounts.removeAll { $0.id == account.id }
+    }
+
+    private func saveAccounts() {
+        if let data = try? JSONEncoder().encode(connectedAccounts) {
+            userDefaults.set(data, forKey: Keys.connectedAccounts)
+        }
+    }
+
+    private func saveCatalogs() {
+        if let data = try? JSONEncoder().encode(connectedCatalogs) {
+            userDefaults.set(data, forKey: Keys.connectedCatalogs)
+        }
+    }
+
+    private static func loadAccounts(from userDefaults: UserDefaults) -> [CloudProviderAccount] {
+        guard let data = userDefaults.data(forKey: Keys.connectedAccounts),
+              let accounts = try? JSONDecoder().decode([CloudProviderAccount].self, from: data)
+        else { return [] }
+        return accounts
+    }
+
+    private static func loadCatalogs(from userDefaults: UserDefaults) -> [OnlineCatalogEntry] {
+        guard let data = userDefaults.data(forKey: Keys.connectedCatalogs),
+              let catalogs = try? JSONDecoder().decode([OnlineCatalogEntry].self, from: data)
+        else { return [] }
+        return catalogs
     }
 
     // MARK: - Private Helpers
@@ -180,7 +272,7 @@ final class iCloudSettingsStore: iCloudSettingsStoreProtocol {
     /// Handles external changes from other devices via iCloud.
     private func handleExternalChange(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
-              let reason = userInfo[NSUbiquitousKeyValueStoreChangeReasonKey] as? NSUbiquitousKeyValueStoreChangeReason.RawValue,
+              let reason = userInfo[NSUbiquitousKeyValueStoreChangeReasonKey] as? Int,
               let changedKeys = userInfo[NSUbiquitousKeyValueStoreChangedKeysKey] as? [String]
         else { return }
 
@@ -213,9 +305,15 @@ private enum Keys {
     static let currentThemeID          = "reader.currentThemeID"
     static let defaultFontSize         = "reader.defaultFontSize"
     static let lineSpacing             = "reader.lineSpacing"
-    static let isAutoScrollEnabled     = "reader.isAutoScrollEnabled" // Local-only
+    static let isAutoScrollEnabled     = "reader.isAutoScrollEnabled"
+    static let fontName                = "reader.fontName"
+    static let readerTheme             = "reader.readerTheme"
     static let isPremiumCache          = "app.isPremiumCache"
     static let isPremiumCacheTimestamp = "app.isPremiumCacheTimestamp"
+    static let connectedAccounts       = "cloud.connectedAccounts"
+    static let connectedCatalogs       = "cloud.connectedCatalogs"
+    static let scrollMode              = "reader.scrollMode"
+    static let verticalTextMode        = "reader.verticalTextMode"
 }
 
 // MARK: - Helper Extension

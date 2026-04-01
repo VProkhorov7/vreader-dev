@@ -106,7 +106,7 @@ actor KeychainManager {
 
     func save(key: KeychainKey, value: String) throws {
         guard let data = value.data(using: .utf8) else {
-            throw AppError.make(.auth(.keychainAccessFailed))
+            throw AppError.make(.keychainAccessFailed)
         }
         try save(key: key, data: data)
     }
@@ -119,7 +119,7 @@ actor KeychainManager {
         }
         guard let string = String(data: data, encoding: .utf8) else {
             logger.error("KeychainManager: failed to decode string for key=\(key.displayName, privacy: .public)")
-            throw AppError.make(.auth(.keychainAccessFailed))
+            throw AppError.make(.keychainAccessFailed)
         }
         return string
     }
@@ -149,11 +149,11 @@ actor KeychainManager {
                 return
             }
             logger.error("KeychainManager: update failed key=\(key.displayName, privacy: .public) status=\(updateStatus, privacy: .public)")
-            throw AppError.make(.auth(.keychainAccessFailed))
+            throw AppError.make(.keychainAccessFailed)
         }
 
         logger.error("KeychainManager: add failed key=\(key.displayName, privacy: .public) status=\(addStatus, privacy: .public)")
-        throw AppError.make(.auth(.keychainAccessFailed))
+        throw AppError.make(.keychainAccessFailed)
     }
 
     // MARK: - Load Data
@@ -172,12 +172,12 @@ actor KeychainManager {
 
         guard status == errSecSuccess else {
             logger.error("KeychainManager: load failed key=\(key.displayName, privacy: .public) status=\(status, privacy: .public)")
-            throw AppError.make(.auth(.keychainAccessFailed))
+            throw AppError.make(.keychainAccessFailed)
         }
 
         guard let data = result as? Data else {
             logger.error("KeychainManager: unexpected data format key=\(key.displayName, privacy: .public)")
-            throw AppError.make(.auth(.keychainAccessFailed))
+            throw AppError.make(.keychainAccessFailed)
         }
 
         return data
@@ -195,7 +195,7 @@ actor KeychainManager {
         }
 
         logger.error("KeychainManager: delete failed key=\(key.displayName, privacy: .public) status=\(status, privacy: .public)")
-        throw AppError.make(.auth(.keychainAccessFailed))
+        throw AppError.make(.keychainAccessFailed)
     }
 
     // MARK: - Exists

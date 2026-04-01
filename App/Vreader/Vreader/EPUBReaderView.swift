@@ -169,7 +169,7 @@ struct EPUBReaderView: View {
     let book:     Book
     @Binding var currentPage: Int
     @Binding var totalPages:  Int
-    @StateObject private var settings = iCloudSettingsStore.shared
+    @State private var settings = iCloudSettingsStore.shared
 
     var onTap:        (() -> Void)?
     var onSwipeDown:  (() -> Void)?

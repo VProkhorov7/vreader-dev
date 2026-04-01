@@ -4,7 +4,7 @@ import SwiftData
 @main
 struct VReaderApp: App {
     let container: ModelContainer
-    @StateObject private var themeManager = ThemeManager.shared
+    @State private var themeStore = ThemeStore()
 
     private static let dbVersionKey = "db.schemaVersion"
     private static let currentVersion = 2
@@ -42,9 +42,9 @@ struct VReaderApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .appTheme(themeManager.current)
-                .environmentObject(themeManager)
-                .environment(NetworkMonitor.shared) // FR-09: Register NetworkMonitor via .environment()
+                .environment(\.appTheme, themeStore.currentTheme)
+                .environment(themeStore)
+                .environment(NetworkMonitor.shared)
         }
         .modelContainer(container)
     }

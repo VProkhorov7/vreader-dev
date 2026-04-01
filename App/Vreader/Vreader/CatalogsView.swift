@@ -89,7 +89,7 @@ struct BuiltInCatalogConfig {
 
 struct OnlineCatalogsSection: View {
     @Binding var showAddCatalog: Bool
-    @ObservedObject private var store = iCloudSettingsStore.shared
+    @State private var store = iCloudSettingsStore.shared
 
     @State private var connectingCatalog: BuiltInCatalogConfig? = nil
     @State private var selectedOPDSCatalog: OnlineCatalogEntry? = nil
@@ -194,7 +194,7 @@ struct OnlineCatalogsSection: View {
 }
 
 struct CloudStorageSection: View {
-    @ObservedObject private var store = iCloudSettingsStore.shared
+    @State private var store = iCloudSettingsStore.shared
     @State private var showAddSheet  = false
     @State private var selectedType: CloudProviderType? = nil
 
@@ -264,7 +264,7 @@ struct CloudStorageSection: View {
 
 struct ConnectBuiltInCatalogSheet: View {
     let config: BuiltInCatalogConfig
-    @ObservedObject private var store = iCloudSettingsStore.shared
+    @State private var store = iCloudSettingsStore.shared
     @Environment(\.dismiss) private var dismiss
 
     private var isConnected: Bool { store.isCatalogConnected(config.id) }
@@ -352,7 +352,7 @@ struct ConnectBuiltInCatalogSheet: View {
 }
 
 struct AddOPDSCatalogSheet: View {
-    @ObservedObject private var store = iCloudSettingsStore.shared
+    @State private var store = iCloudSettingsStore.shared
     @Environment(\.dismiss) private var dismiss
 
     @State private var name     = ""
@@ -479,7 +479,7 @@ struct AddOPDSCatalogSheet: View {
 struct AddCloudAccountSheet: View {
     var preselectedType: CloudProviderType? = nil
 
-    @ObservedObject private var store = iCloudSettingsStore.shared
+    @State private var store = iCloudSettingsStore.shared
     @Environment(\.dismiss) private var dismiss
 
     @State private var selectedType: CloudProviderType = .yandexDisk

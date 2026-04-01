@@ -52,7 +52,7 @@ final class DiagnosticsService: @unchecked Sendable {
             switch self {
             case .debug: return .debug
             case .info: return .info
-            case .warning: return .warning
+            case .warning: return .default
             case .error: return .error
             case .fault: return .fault
             }
@@ -93,7 +93,7 @@ final class DiagnosticsService: @unchecked Sendable {
     ///   - category: The category of the log entry.
     func debug(_ message: String, category: LogCategory) {
         let sanitizedMessage = sanitize(message)
-        logger.debug(Logger.Message(sanitizedMessage), category: category.rawValue)
+        logger.debug("\(sanitizedMessage, privacy: .public)")
         addEntry(level: .debug, category: category, message: sanitizedMessage)
     }
 
@@ -103,7 +103,7 @@ final class DiagnosticsService: @unchecked Sendable {
     ///   - category: The category of the log entry.
     func info(_ message: String, category: LogCategory) {
         let sanitizedMessage = sanitize(message)
-        logger.info(Logger.Message(sanitizedMessage), category: category.rawValue)
+        logger.info("\(sanitizedMessage, privacy: .public)")
         addEntry(level: .info, category: category, message: sanitizedMessage)
     }
 
@@ -113,7 +113,7 @@ final class DiagnosticsService: @unchecked Sendable {
     ///   - category: The category of the log entry.
     func warning(_ message: String, category: LogCategory) {
         let sanitizedMessage = sanitize(message)
-        logger.warning(Logger.Message(sanitizedMessage), category: category.rawValue)
+        logger.warning("\(sanitizedMessage, privacy: .public)")
         addEntry(level: .warning, category: category, message: sanitizedMessage)
     }
 
@@ -125,7 +125,7 @@ final class DiagnosticsService: @unchecked Sendable {
         let message = "\(context): \(error.description) (\(error.code)) - Recovery: \(error.recoveryHint)"
         let sanitizedMessage = sanitize(message)
         let category = mapAppErrorToLogCategory(error)
-        logger.error(Logger.Message(sanitizedMessage), category: category.rawValue)
+        logger.error("\(sanitizedMessage, privacy: .public)")
         addEntry(level: .error, category: category, message: sanitizedMessage)
     }
 
@@ -135,7 +135,7 @@ final class DiagnosticsService: @unchecked Sendable {
     ///   - category: The category of the log entry.
     func fault(_ message: String, category: LogCategory) {
         let sanitizedMessage = sanitize(message)
-        logger.fault(Logger.Message(sanitizedMessage), category: category.rawValue)
+        logger.fault("\(sanitizedMessage, privacy: .public)")
         addEntry(level: .fault, category: category, message: sanitizedMessage)
     }
 
@@ -216,7 +216,7 @@ final class DiagnosticsService: @unchecked Sendable {
     /// This file is intended for user export, not for restoring the in-memory buffer on launch.
     func persistLogsToCache() {
         guard let cachesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            logger.error("Could not find Caches directory to persist logs.", category: .fileSystem)
+            logger.error("Could not find Caches directory to persist logs.")
             return
         }
 
@@ -225,9 +225,9 @@ final class DiagnosticsService: @unchecked Sendable {
 
         do {
             try logContent.write(to: logFileURL, atomically: true, encoding: .utf8)
-            logger.debug("Logs persisted to cache at \(logFileURL.lastPathComponent)", category: .fileSystem)
+            logger.debug("Logs persisted to cache at \(logFileURL.lastPathComponent, privacy: .public)")
         } catch {
-            logger.error("Failed to persist logs to cache: \(error.localizedDescription)", category: .fileSystem)
+            logger.error("Failed to persist logs to cache: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -245,7 +245,7 @@ final class DiagnosticsService: @unchecked Sendable {
             return content
         } catch {
             // Log this as debug, as it's expected the file might not exist on first launch or after cleanup.
-            logger.debug("No existing logs found in cache or failed to read: \(error.localizedDescription)", category: .fileSystem)
+            logger.debug("No existing logs found in cache or failed to read: \(error.localizedDescription, privacy: .public)")
             return nil
         }
     }

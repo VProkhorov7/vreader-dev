@@ -3,7 +3,7 @@ import Network
 import SwiftUI
 
 /// Protocol for network path monitoring, allowing for testability.
-protocol PathMonitoring {
+protocol PathMonitoring: AnyObject {
     var pathUpdateHandler: ((NWPath) -> Void)? { get set }
     var currentPath: NWPath { get }
     func start(queue: DispatchQueue)
@@ -74,7 +74,7 @@ final class NetworkMonitor {
             self?.handlePathUpdate(path)
         }
         monitor.start(queue: queue)
-        DiagnosticsService.shared.info(L10n.Network.monitoringStarted)
+        DiagnosticsService.shared.info(L10n.Network.monitoringStarted, category: .navigation)
     }
 
     /// Stops network path monitoring.
@@ -83,7 +83,7 @@ final class NetworkMonitor {
     func stopMonitoring() {
         // FR-06: stopMonitoring() is a no-op for the singleton.
         // The underlying NWPathMonitor is never cancelled for the app's lifetime.
-        DiagnosticsService.shared.info(L10n.Network.monitoringStoppedNoOp)
+        DiagnosticsService.shared.info(L10n.Network.monitoringStoppedNoOp, category: .navigation)
     }
 
     /// Handles updates from `NWPathMonitor`.
@@ -110,7 +110,7 @@ final class NetworkMonitor {
                     self.isOnline = true
                     self.publishStatus(true)
                     // FR-12: Log state transition at .info level.
-                    DiagnosticsService.shared.info("\(L10n.Network.statusOnline) (\(self.connectionType.rawValue))")
+                    DiagnosticsService.shared.info("\(L10n.Network.statusOnline) (\(self.connectionType.rawValue))", category: .navigation)
                 }
             } else { // Network is offline
                 if oldIsOnline { // Only if the state actually changed from online to offline
@@ -121,13 +121,13 @@ final class NetworkMonitor {
                         // This handles rapid online→offline→online scenarios (FR-11, Acceptance Criteria).
                         // If the network came back online during the 300ms debounce, we should not publish offline.
                         if self.monitor.currentPath.status == .satisfied {
-                            DiagnosticsService.shared.info(L10n.Network.offlineDebounceCancelled)
+                            DiagnosticsService.shared.info(L10n.Network.offlineDebounceCancelled, category: .navigation)
                             return // Network restored during debounce, do not publish offline.
                         }
                         self.isOnline = false
                         self.publishStatus(false)
                         // FR-12: Log state transition at .info level.
-                        DiagnosticsService.shared.info("\(L10n.Network.statusOffline) (\(self.connectionType.rawValue))")
+                        DiagnosticsService.shared.info("\(L10n.Network.statusOffline) (\(self.connectionType.rawValue))", category: .navigation)
                     }
                     self.debounceWorkItem = workItem
                     // FR-11: Debounce offline transitions by 300ms.

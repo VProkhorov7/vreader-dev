@@ -146,7 +146,7 @@ struct ReaderView: View {
     let book: Book
     @Environment(\.modelContext)  private var modelContext
     @Environment(\.dismiss)       private var dismiss
-    @StateObject private var settings = iCloudSettingsStore.shared
+    @State private var settings = iCloudSettingsStore.shared
 
     @State private var showBars     = false  // полноэкранный режим по умолчанию
     @State private var showContents = false
@@ -511,7 +511,7 @@ struct ReaderView: View {
 
     struct ReaderSettingsPanel: View {
         @Binding var isVisible: Bool
-        @StateObject private var settings = iCloudSettingsStore.shared
+        @State private var settings = iCloudSettingsStore.shared
 
         var body: some View {
             HStack(spacing: 0) {

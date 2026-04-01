@@ -13,6 +13,11 @@ enum L10n {
         static var favorites: String { NSLocalizedString("library.favorites", comment: "") }
         static var allBooks: String { NSLocalizedString("library.allBooks", comment: "") }
         static var recentlyRead: String { NSLocalizedString("library.recentlyRead", comment: "") }
+        static var chooseSource: String { NSLocalizedString("library.chooseSource", comment: "") }
+        static var delete: String { NSLocalizedString("library.delete", comment: "") }
+        static var fromDevice: String { NSLocalizedString("library.fromDevice", comment: "") }
+        static var emptyTitle: String { NSLocalizedString("library.emptyTitle", comment: "") }
+        static var emptyMessage: String { NSLocalizedString("library.emptyMessage", comment: "") }
     }
 
     enum Reader {
@@ -113,6 +118,8 @@ enum L10n {
         static var success: String { NSLocalizedString("common.success", comment: "") }
         static var warning: String { NSLocalizedString("common.warning", comment: "") }
         static var unknown: String { NSLocalizedString("common.unknown", comment: "") }
+        static var add: String { NSLocalizedString("common.add", comment: "") }
+        static var done: String { NSLocalizedString("common.done", comment: "") }
     }
 
     enum Errors {
@@ -132,6 +139,86 @@ enum L10n {
         static var connectCloud: String { NSLocalizedString("onboarding.connectCloud", comment: "") }
         static var skip: String { NSLocalizedString("onboarding.skip", comment: "") }
         static var getStarted: String { NSLocalizedString("onboarding.getStarted", comment: "") }
+    }
+
+    enum AppThemeNames {
+        static var premiumRequired: String { NSLocalizedString("appThemeNames.premiumRequired", comment: "") }
+    }
+
+    enum ReaderKeys {
+        static var chapter: String { NSLocalizedString("readerKeys.chapter", comment: "") }
+        static var contents: String { NSLocalizedString("readerKeys.contents", comment: "") }
+        static var appearance: String { NSLocalizedString("readerKeys.appearance", comment: "") }
+        static var theme: String { NSLocalizedString("readerKeys.theme", comment: "") }
+        static var fontSize: String { NSLocalizedString("readerKeys.fontSize", comment: "") }
+        static var lineSpacing: String { NSLocalizedString("readerKeys.lineSpacing", comment: "") }
+        static var scrollMode: String { NSLocalizedString("readerKeys.scrollMode", comment: "") }
+        static var languageScript: String { NSLocalizedString("readerKeys.languageScript", comment: "") }
+        static var verticalText: String { NSLocalizedString("readerKeys.verticalText", comment: "") }
+        static var verticalTextHint: String { NSLocalizedString("readerKeys.verticalTextHint", comment: "") }
+        static var rtlHint: String { NSLocalizedString("readerKeys.rtlHint", comment: "") }
+        static var unsupportedFormats: String { NSLocalizedString("readerKeys.unsupportedFormats", comment: "") }
+        static var notDownloaded: String { NSLocalizedString("readerKeys.notDownloaded", comment: "") }
+        static var download: String { NSLocalizedString("readerKeys.download", comment: "") }
+
+        enum ThemeNames {
+            static var light: String { NSLocalizedString("readerKeys.themeNames.light", comment: "") }
+            static var sepia: String { NSLocalizedString("readerKeys.themeNames.sepia", comment: "") }
+            static var dark: String { NSLocalizedString("readerKeys.themeNames.dark", comment: "") }
+        }
+
+        enum SpacingKeys {
+            static var narrow: String { NSLocalizedString("readerKeys.spacing.narrow", comment: "") }
+            static var medium: String { NSLocalizedString("readerKeys.spacing.medium", comment: "") }
+            static var wide: String { NSLocalizedString("readerKeys.spacing.wide", comment: "") }
+        }
+
+        enum Scroll {
+            static var pageHorizontal: String { NSLocalizedString("readerKeys.scroll.pageHorizontal", comment: "") }
+            static var scrollVertical: String { NSLocalizedString("readerKeys.scroll.scrollVertical", comment: "") }
+            static var scrollHorizontal: String { NSLocalizedString("readerKeys.scroll.scrollHorizontal", comment: "") }
+        }
+    }
+
+    enum Audio {
+        static var chapters: String { NSLocalizedString("audio.chapters", comment: "") }
+    }
+
+    enum Catalogs {
+        static var title: String { NSLocalizedString("catalogs.title", comment: "") }
+        static var storage: String { NSLocalizedString("catalogs.storage", comment: "") }
+        static var disconnect: String { NSLocalizedString("catalogs.disconnect", comment: "") }
+        static var free: String { NSLocalizedString("catalogs.free", comment: "") }
+        static var comingSoon: String { NSLocalizedString("catalogs.comingSoon", comment: "") }
+        static var builtin: String { NSLocalizedString("catalogs.builtin", comment: "") }
+        static var connected: String { NSLocalizedString("catalogs.connected", comment: "") }
+        static var available: String { NSLocalizedString("catalogs.available", comment: "") }
+        static var connect: String { NSLocalizedString("catalogs.connect", comment: "") }
+
+        enum OPDS {
+            static var catalog: String { NSLocalizedString("catalogs.opds.catalog", comment: "") }
+            static var namePlaceholder: String { NSLocalizedString("catalogs.opds.namePlaceholder", comment: "") }
+            static var urlPlaceholder: String { NSLocalizedString("catalogs.opds.urlPlaceholder", comment: "") }
+            static var urlHint: String { NSLocalizedString("catalogs.opds.urlHint", comment: "") }
+            static var authSection: String { NSLocalizedString("catalogs.opds.authSection", comment: "") }
+            static var serverOk: String { NSLocalizedString("catalogs.opds.serverOk", comment: "") }
+            static var serverFail: String { NSLocalizedString("catalogs.opds.serverFail", comment: "") }
+            static var addTitle: String { NSLocalizedString("catalogs.opds.addTitle", comment: "") }
+        }
+
+        enum CloudForm {
+            static var login: String { NSLocalizedString("catalogs.cloudForm.login", comment: "") }
+            static var password: String { NSLocalizedString("catalogs.cloudForm.password", comment: "") }
+            static var testing: String { NSLocalizedString("catalogs.cloudForm.testing", comment: "") }
+            static var test: String { NSLocalizedString("catalogs.cloudForm.test", comment: "") }
+            static var service: String { NSLocalizedString("catalogs.cloudForm.service", comment: "") }
+            static var type_: String { NSLocalizedString("catalogs.cloudForm.type", comment: "") }
+            static var connection: String { NSLocalizedString("catalogs.cloudForm.connection", comment: "") }
+            static var serverAddr: String { NSLocalizedString("catalogs.cloudForm.serverAddr", comment: "") }
+            static var testOk: String { NSLocalizedString("catalogs.cloudForm.testOk", comment: "") }
+            static var testFail: String { NSLocalizedString("catalogs.cloudForm.testFail", comment: "") }
+            static var addTitle: String { NSLocalizedString("catalogs.cloudForm.addTitle", comment: "") }
+        }
     }
 
     /// Strings related to network status and monitoring.
