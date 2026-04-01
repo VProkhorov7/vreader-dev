@@ -1,0 +1,90 @@
+{
+  "checklist": [
+    {
+      "id": "test_files_exist",
+      "label": "Test files present",
+      "passed": false,
+      "detail": "No test files found"
+    },
+    {
+      "id": "spec_exists",
+      "label": "Specification filled",
+      "passed": true,
+      "detail": "4913 chars"
+    },
+    {
+      "id": "stages_complete",
+      "label": "All stages implemented",
+      "passed": true,
+      "detail": "1/1 stages"
+    }
+  ],
+  "task_commands": [
+    {
+      "name": "name:",
+      "command": "name: Build check (Vreader target)",
+      "success": false,
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "/bin/sh: -c: line 0: syntax error near unexpected token `('\n/bin/sh: -c: line 0: `name: Build check (Vreader target)'\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Unit tests (iCloudSettingsStore)",
+      "success": false,
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "/bin/sh: -c: line 0: syntax error near unexpected token `('\n/bin/sh: -c: line 0: `name: Unit tests (iCloudSettingsStore)'\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check old typo file is gone",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check new file exists (root target)",
+      "success": false,
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "/bin/sh: -c: line 0: syntax error near unexpected token `('\n/bin/sh: -c: line 0: `name: Check new file exists (root target)'\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Check new file exists (App target)",
+      "success": false,
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "/bin/sh: -c: line 0: syntax error near unexpected token `('\n/bin/sh: -c: line 0: `name: Check new file exists (App target)'\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Verify no NSUbiquitousKeyValueStore write for isAutoScrollEnabled",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Verify isPremiumCache key ignored in notification handler",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    },
+    {
+      "name": "name:",
+      "command": "name: Verify no credentials in store file",
+      "success": false,
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/sh: name:: command not found\n"
+    }
+  ],
+  "passed": false,
+  "timestamp": "2026-04-01T17:00:34.560842"
+}

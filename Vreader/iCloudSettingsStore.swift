@@ -164,7 +164,7 @@ final class iCloudSettingsStore: iCloudSettingsStoreProtocol {
     /// returning default values (0 for Double, false for Bool, nil for String) if iCloud
     /// is not active or entitlement is missing. This naturally triggers the fallback.
     private var isUbiquitousStoreAvailable: Bool {
-        // NSUbiquitousKeyValueStore.default is always instantiated, but its functionality
+        // NSUbiquitousKeyValueStore.default is always available, but its functionality
         // depends on entitlements and iCloud status. If it's not syncing,
         // reads will return default values (0 for Double, false for Bool, nil for String).
         // We don't need an explicit 'isAvailable' flag for this, as the fallback logic

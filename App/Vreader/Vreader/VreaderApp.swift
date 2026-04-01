@@ -10,6 +10,9 @@ struct VReaderApp: App {
     private static let currentVersion = 2
 
     init() {
+        // Eagerly initialize iCloudSettingsStore.shared on MainActor
+        _ = iCloudSettingsStore.shared
+
         let schema = Schema([Book.self])
         let config = ModelConfiguration(
             schema: schema,
@@ -31,7 +34,7 @@ struct VReaderApp: App {
             do {
                 container = try ModelContainer(for: schema, configurations: config)
             } catch {
-                fatalError("Не удалось создать ModelContainer: \(error)")
+                fatalError("Failed to create ModelContainer: \(error)")
             }
         }
     }

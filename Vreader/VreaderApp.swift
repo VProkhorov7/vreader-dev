@@ -6,6 +6,9 @@ struct VReaderApp: App {
     let container: ModelContainer
 
     init() {
+        // Eagerly initialize iCloudSettingsStore.shared on MainActor
+        _ = iCloudSettingsStore.shared
+
         let schema = Schema([Book.self])
         let config = ModelConfiguration(
             schema: schema,
@@ -17,7 +20,7 @@ struct VReaderApp: App {
             container = try ModelContainer(for: schema,
                                            configurations: config)
         } catch {
-            // Попытка пересоздания только при проблемах с миграцией
+            // Attempt to recreate only on migration issues
             if (error as NSError).domain == NSCocoaErrorDomain {
                 let storeURL = config.url
                 try? FileManager.default.removeItem(at: storeURL)
@@ -25,10 +28,10 @@ struct VReaderApp: App {
                     container = try ModelContainer(for: schema,
                                                    configurations: config)
                 } catch {
-                    fatalError("Не удалось создать ModelContainer: \(error)")
+                    fatalError("Failed to create ModelContainer: \(error)")
                 }
             } else {
-                fatalError("Не удалось создать ModelContainer: \(error)")
+                fatalError("Failed to create ModelContainer: \(error)")
             }
         }
     }
