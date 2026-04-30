@@ -12,20 +12,6 @@ enum BookFormat: String {
     }
 }
 
-enum ImportError: Error, LocalizedError {
-    case unsupportedFormat(String)
-    case copyFailed(String)
-
-    var errorDescription: String? {
-        switch self {
-        case .unsupportedFormat(let e):
-            return "Формат не поддерживается: \(e)"
-        case .copyFailed(let e):
-            return "Ошибка копирования: \(e)"
-        }
-    }
-}
-
 @Observable
 @MainActor
 final class BookImporter {
@@ -46,7 +32,11 @@ final class BookImporter {
                     source: String = "local") throws -> Book {
 
         guard let format = BookFormat(url: sourceURL) else {
-            throw ImportError.unsupportedFormat(sourceURL.pathExtension)
+            throw AppError(
+                code: .parsing(.unsupportedFormat),
+                description: "The file format '\(sourceURL.pathExtension)' is not supported.",
+                recoveryHint: "Supported formats: EPUB, FB2, PDF."
+            )
         }
 
         let uniqueName = "\(UUID().uuidString).\(format.rawValue)"
@@ -55,7 +45,12 @@ final class BookImporter {
         do {
             try FileManager.default.copyItem(at: sourceURL, to: destURL)
         } catch {
-            throw ImportError.copyFailed(error.localizedDescription)
+            throw AppError(
+                code: .fileSystem(.permissionDenied),
+                description: "Failed to copy the file to the library.",
+                recoveryHint: "Check available storage space and file permissions.",
+                underlyingError: error as? (any Error & Sendable)
+            )
         }
 
         let attrs    = try? FileManager.default.attributesOfItem(atPath: destURL.path)

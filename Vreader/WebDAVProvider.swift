@@ -1,4 +1,3 @@
-// Providers/WebDAVProvider.swift
 import Foundation
 import Combine
 
@@ -19,16 +18,12 @@ final class WebDAVProvider: CloudProviderProtocol {
     }
 
     func authenticate() async throws {
-        // Credentials загружаем из KeychainManager
-        // credentials = KeychainManager.shared.getCredentials(for: id)
         isAuthenticated = credentials != nil
     }
 
     func signOut() async throws {
         credentials = nil
         isAuthenticated = false
-        // Удаляем credentials из KeychainManager
-        // KeychainManager.shared.deleteCredentials(for: id)
     }
 
     func listFiles(at path: String) async throws -> [CloudFile] {
@@ -46,7 +41,11 @@ final class WebDAVProvider: CloudProviderProtocol {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard (response as? HTTPURLResponse)?.statusCode == 207 else {
-            throw CloudError.fileNotFound(path)
+            throw AppError(
+                code: .fileSystem(.fileNotFound),
+                description: "WebDAV path not found.",
+                recoveryHint: "Check the server path and try again."
+            )
         }
         return parseWebDAVResponse(data)
     }
@@ -55,12 +54,17 @@ final class WebDAVProvider: CloudProviderProtocol {
                   to localURL: URL,
                   progress: @escaping (Double) -> Void) async throws {
 
-        guard isAuthenticated else { throw CloudError.notAuthenticated }
+        guard isAuthenticated else {
+            throw AppError(
+                code: .auth(.credentialsMissing),
+                description: "WebDAV authentication required.",
+                recoveryHint: "Reconnect the WebDAV source in Settings."
+            )
+        }
 
         let url = baseURL.appendingPathComponent(file.path)
         var request = URLRequest(url: url)
 
-        // Basic Auth из Keychain
         if let credentials {
             let token = "\(credentials.user ?? ""):\(credentials.password ?? "")"
             if let data = token.data(using: .utf8) {
@@ -72,21 +76,21 @@ final class WebDAVProvider: CloudProviderProtocol {
         }
 
         let delegate = DownloadProgressDelegate(onProgress: progress)
-
-        // delegate передаём здесь — task его подхватит и сам освободит
         let (tempURL, response) = try await URLSession.shared
             .download(for: request, delegate: delegate)
 
         guard let http = response as? HTTPURLResponse,
               (200...299).contains(http.statusCode) else {
-            throw CloudError.downloadFailed("HTTP \((response as? HTTPURLResponse)?.statusCode ?? -1)")
+            throw AppError(
+                code: .cloudProvider(.providerUnavailable),
+                description: "WebDAV download failed with unexpected HTTP status.",
+                recoveryHint: "Check the server status and try again."
+            )
         }
 
-        // Если файл уже есть — удаляем (повторная загрузка)
         try? FileManager.default.removeItem(at: localURL)
         try FileManager.default.moveItem(at: tempURL, to: localURL)
 
-        // Финальный 100%
         await MainActor.run { progress(1.0) }
     }
 
@@ -99,9 +103,15 @@ final class WebDAVProvider: CloudProviderProtocol {
             fromFile: localURL
         )
         _ = data
-        return CloudFile(id: path, name: localURL.lastPathComponent, path: path,
-                         size: 0, modifiedAt: .now,
-                         mimeType: "application/pdf", isDirectory: false)
+        return CloudFile(
+            id: path,
+            name: localURL.lastPathComponent,
+            path: path,
+            size: 0,
+            modifiedAt: .now,
+            mimeType: "application/pdf",
+            isDirectory: false
+        )
     }
 
     func delete(file: CloudFile) async throws {
@@ -111,10 +121,9 @@ final class WebDAVProvider: CloudProviderProtocol {
     }
 
     func getStorageInfo() async throws -> (used: Int64, total: Int64) {
-        return (0, 0) // Nextcloud поддерживает QUOTA через PROPFIND — добавить позже
+        return (0, 0)
     }
 
-    // Заменяем заглушку parseWebDAVResponse
     private func parseWebDAVResponse(_ data: Data) -> [CloudFile] {
         WebDAVXMLParser().parse(data)
     }

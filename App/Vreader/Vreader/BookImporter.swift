@@ -2,7 +2,6 @@ import Foundation
 import SwiftUI
 import Observation
 
-// Поддерживаемые форматы — все форматы которые ReaderView умеет открывать
 enum BookFormat: String, CaseIterable {
     case pdf   = "pdf"
     case epub  = "epub"
@@ -22,7 +21,6 @@ enum BookFormat: String, CaseIterable {
     case m4b   = "m4b"
 
     init?(url: URL) {
-        // Обрабатываем двойное расширение fb2.zip → fb2
         let name = url.lastPathComponent.lowercased()
         if name.hasSuffix(".fb2.zip") {
             self = .fb2; return
@@ -30,21 +28,8 @@ enum BookFormat: String, CaseIterable {
         self.init(rawValue: url.pathExtension.lowercased())
     }
 
-    /// Категория для UI и логики ридера
     var isAudio: Bool { self == .mp3 || self == .m4a || self == .m4b }
     var isComic: Bool { self == .cbz || self == .cbr || self == .cb7 || self == .cbt }
-}
-
-enum ImportError: Error, LocalizedError {
-    case unsupportedFormat(String)
-    case copyFailed(String)
-
-    var errorDescription: String? {
-        switch self {
-        case .unsupportedFormat(let e): return "Формат не поддерживается: \(e)"
-        case .copyFailed(let e):        return "Ошибка копирования: \(e)"
-        }
-    }
 }
 
 @Observable
@@ -61,17 +46,25 @@ final class BookImporter {
 
     func importBook(from sourceURL: URL, source: String = "local") throws -> Book {
         guard let format = BookFormat(url: sourceURL) else {
-            throw ImportError.unsupportedFormat(sourceURL.pathExtension)
+            throw AppError(
+                code: .parsing(.unsupportedFormat),
+                description: "The file format '\(sourceURL.pathExtension)' is not supported.",
+                recoveryHint: "Supported formats: EPUB, FB2, PDF, DjVu, CBZ, CBR, TXT, RTF, MP3, M4B."
+            )
         }
 
-        // Для fb2.zip сохраняем как .fb2
-        let ext      = format.rawValue
-        let destURL  = booksDirectory.appendingPathComponent("\(UUID().uuidString).\(ext)")
+        let ext     = format.rawValue
+        let destURL = booksDirectory.appendingPathComponent("\(UUID().uuidString).\(ext)")
 
         do {
             try FileManager.default.copyItem(at: sourceURL, to: destURL)
         } catch {
-            throw ImportError.copyFailed(error.localizedDescription)
+            throw AppError(
+                code: .fileSystem(.permissionDenied),
+                description: "Failed to copy the file to the library.",
+                recoveryHint: "Check available storage space and file permissions.",
+                underlyingError: error as? (any Error & Sendable)
+            )
         }
 
         let attrs    = try? FileManager.default.attributesOfItem(atPath: destURL.path)
