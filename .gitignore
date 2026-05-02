@@ -6,3 +6,4 @@ build/
 *.o
 *.d
 .skaro/secrets.yaml
+.claude/settings.local.json
