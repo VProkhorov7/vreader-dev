@@ -1,0 +1,37 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js / web builds
+.next/
+out/
+dist/
+build/
+coverage/
+
+# Xcode / Swift / Apple build artifacts
+DerivedData/
+.build/
+*.xcuserdata/
+*.xcuserstate
+
+# logs
+*.log
+logs/
+.claude/logs/
+
+# git and env
+.git/
+.env
+.env.*
+
+# caches
+.cache/
+.turbo/
+__pycache__/
+.pytest_cache/
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
